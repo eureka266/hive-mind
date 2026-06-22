@@ -16,7 +16,7 @@ A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nob
 <strong>Discussions are real-time; knowledge leaks away.</strong> HiveMind captures it: every product chat becomes traceable, durable, reusable facts, decisions, and workflows — versioned in Git, shared with your team.
 </p>
 
-[中文](./README.zh.md) • [GitHub](https://github.com/eureka266/hive-mind) • [Docs](./docs)
+[中文](./README.zh.md) • [GitHub](https://github.com/eureka266/hive-mind) • [Use Cases](./docs/use-cases.md)
 
 [![install](https://img.shields.io/badge/install-npx%20skills%20add-000000?style=flat-square)](https://github.com/eureka266/hive-mind)
 [![GitHub Stars](https://img.shields.io/github/stars/eureka266/hive-mind?style=flat-square&color=eab308)](https://github.com/eureka266/hive-mind/stargazers)
