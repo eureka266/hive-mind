@@ -124,6 +124,10 @@ Details: [`claude-code/README.md`](./claude-code/README.md), [`codex/README.md`]
 | Lost mid-discussion changes | Re-run `/prd [feature]` — HiveMind auto-detects and offers recovery |
 | How do I view the HTML prototype? | Claude Code: `open <knowledge-repo>/features/[feature]/prototype.html`; VS Code: use Live Preview extension |
 
+## Acknowledgements
+
+The questioning logic in `/prd` — one question at a time, context loaded before asking, no sycophancy, no moving on until you've answered concretely — is inspired by [gstack](https://github.com/garrytan/gstack)'s `/office-hours`. The `/prd review` command draws from gstack's `/plan-ceo-review`: premise challenge, scope risk, and adversarial "would you regret this in 6 months?" framing applied to product decisions. Thank you [@garrytan](https://github.com/garrytan).
+
 ## Safety & scope
 
 - HiveMind reads/writes **only** your specified local knowledge directory and Git repo; uploads to nowhere.

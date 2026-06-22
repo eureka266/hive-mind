@@ -1,6 +1,16 @@
 # Real-World Use Cases
 
-These scenarios are drawn from actual production usage of HiveMind-style knowledge repos. All company names and product specifics have been generalized to apply to any SaaS PM workflow.
+> **The core mechanic, illustrated.**
+>
+> You type `/prd bulk-import`. Before asking a single question, HiveMind loads everything relevant from your knowledge base — existing facts about the product, prior decisions that touched similar scope, any reusable rules from `memory/`. Only then does it start asking — one question at a time, with no sycophancy, no "that's interesting!", and no moving on until you've answered concretely.
+>
+> This is the pattern every scenario below demonstrates.
+
+---
+
+**Questioning logic** is inspired by [gstack](https://github.com/garrytan/gstack)'s `/office-hours` — product interrogation that pushes for behavioral evidence, names specific people, and takes a position on every answer. `/prd review` is inspired by gstack's `/plan-ceo-review` — premise challenge, scope risk, and the "6-month regret scenario" applied to product decisions.
+
+---
 
 | # | Scenario | Use when |
 |---|----------|----------|
@@ -8,7 +18,7 @@ These scenarios are drawn from actual production usage of HiveMind-style knowled
 | 2 | [Redesign a pricing model](#2-redesign-a-pricing-model) | Complex plan restructure across billing, checkout, and quota |
 | 3 | [Build an embedded AI assistant knowledge base](#3-build-an-embedded-ai-assistant-knowledge-base) | Creating a RAG knowledge base for an in-product AI chatbot |
 | 4 | [Track cross-feature product decisions](#4-track-cross-feature-product-decisions) | Preventing repeated debates and rationale drift across features |
-| 5 | [Research-driven churn diagnosis](#5-research-driven-churn-diagnosis) | Combining analytics, support tickets, and user feedback into actionable findings |
+| 5 | [Research-driven churn diagnosis](#5-research-driven-churn-diagnosis) | Combining analytics, support tickets, and user interviews into actionable findings |
 
 ---
 
@@ -18,53 +28,75 @@ These scenarios are drawn from actual production usage of HiveMind-style knowled
 
 ### 1.1 Example situation
 
-Your SaaS has a monitoring/alert feature (think "get notified when X changes") that is subscription-only. Free-plan users can trigger the feature by accident (e.g., hovering a button) but hit a paywall with no context. You've noticed repeat behavior from the same users — they keep revisiting the same record — which is a strong signal that they want persistent tracking but don't know the product offers it.
+Your SaaS has a monitoring/alert feature (think "get notified when X changes") that is subscription-only. Free-plan users can trigger it by accident (e.g., hovering a button) but hit a paywall with no context. You've noticed repeat behavior from the same users — they keep revisiting the same record — which is a strong signal that they want persistent tracking but don't know the product offers it.
 
-The PM needs to design a three-layer progressive-disclosure upsell:
-- **Layer 1** — first impression (new users, ≤ 24h old): lightweight tooltip, no hard sell
-- **Layer 2** — repeat-signal (same user revisits the same item 2+ times in 7 days): full upsell card with plan details
-- **Layer 3** — explicit intent (user clicks the locked feature button): upgrade modal, max conversion
+The PM needs to design a three-layer progressive-disclosure upsell.
 
 ### 1.2 Starting prompt
 
 ```
 /prd monitor-upsell
 
-Context: Users who screen the same address 2+ times in a week are our best upgrade signal. 
-Right now they hit a raw paywall. I want a 3-layer progressive-disclosure upsell:
-- Layer 1 (new users, account < 24h): hover popover, soft awareness
-- Layer 2 (repeat-screen signal): full upsell card, show plan comparison and price
-- Layer 3 (explicit click on locked button): full modal, maximize conversion
-
-Constraints:
-- 30-day dismissal suppression after user closes a prompt
-- Free-plan and usage-credits-plan users see different messaging
-- No auto-triggering modals; only on explicit user action
+Users who screen the same record 2+ times in a week are our best upgrade signal.
+Right now they hit a raw paywall. I want a 3-layer progressive-disclosure upsell.
 ```
 
-### 1.3 Workflow
+### 1.3 What happens first: knowledge base load
 
-1. **AI** loads `facts/[product].md` → confirms which plan tiers have the feature, which don't
-2. **AI** reads existing decisions → "did we ever decide why the paywall is hard vs. soft?"
-3. **PM + AI** discuss: trigger logic for each layer, suppression window, per-user-tier copy variants
-4. **AI** drafts `features/monitor-upsell/prd.md` with trigger table, UX copy variants, and analytics event list
-5. **PM** reviews — approves or adjusts suppression window and messaging
-6. **AI** generates `features/monitor-upsell/workflow.yaml` — state machine for the 3 layers
-7. **AI** generates `features/monitor-upsell/monitor-upsell-prototype.html` — clickable prototype showing all 3 layers
-8. **AI** writes `decisions/decision-YYYYMMDD-monitor-upsell.md` — records the "why 7-day window, why 24h new-user threshold"
-9. **PM** confirms → `git commit`
+Before asking anything, HiveMind loads:
 
-### 1.4 What gets captured in the knowledge base
+- `facts/[product].md` → current plan tiers and which tier has the monitoring feature
+- `decisions/` → any prior decisions about this feature (e.g., why the paywall was hard vs. soft)
+- `memory/rules/` → any reusable rules about conversion copy or suppression windows
 
-- `decisions/` — layer trigger logic and thresholds (so the next PM doesn't re-debate "should Layer 2 fire at 2 visits or 3?")
-- `memory/rules/` — "repeat-visit is valid conversion signal; do not confuse with accidental clicks"
-- `features/monitor-upsell/` — full PRD, state machine, prototype, open questions
+Only after loading this context does it start asking — and it already knows what's been decided, so it doesn't re-open closed questions.
 
-### 1.5 Done means
+### 1.4 How the questioning goes (one at a time)
+
+```
+AI: "Before we design the layers — who are we targeting first:
+     free-plan users, usage-credits users, or both?
+     Existing decisions don't specify a split. If you say 'both',
+     I'll flag where the copy diverges."
+
+PM: "Both, but credits users need a different message."
+
+AI: "Got it. What's your suppression window after a user dismisses a prompt?
+     I see decision-20250312-quota-exhaustion uses 30 days for a similar nudge.
+     Should we match that or set something different here?"
+
+PM: "30 days is fine."
+
+AI: "One more: for Layer 2 (the repeat-visit trigger) — do you define
+     'repeat' as 2 visits to the same record within 7 days?
+     Or is it any 2 visits to any record in 7 days?
+     This changes the backend counter scope significantly."
+```
+
+Questions stop when the PM has enough context specified to write a non-ambiguous PRD. HiveMind does not ask questions it can answer itself from the knowledge base.
+
+### 1.5 What gets committed
+
+After discussion, HiveMind stages for your approval:
+
+```
+✅ Ready to commit — please review:
+
+  features/monitor-upsell/prd.md          (new — layer logic, trigger table, copy variants)
+  features/monitor-upsell/workflow.yaml   (new — 3-layer state machine)
+  features/monitor-upsell/prototype.html  (new — clickable demo of all 3 layers)
+  decisions/decision-YYYYMMDD-monitor-upsell.md  (new — why 7-day window, why 24h new-user threshold)
+  memory/rules/conversion-suppression.md  (new — "30-day dismissal rule")
+```
+
+Nothing is written until you approve.
+
+### 1.6 Done means
 
 - Prototype demonstrates all 3 layer transitions
 - Dismissal suppression logic is documented with edge cases
 - Engineering handoff includes ≥ 8 analytics events covering the full conversion funnel
+- The "why 7 days" is in `decisions/`, not just in Slack
 
 ---
 
@@ -74,55 +106,71 @@ Constraints:
 
 ### 2.1 Example situation
 
-Your product has outgrown its original 3-tier pricing model (Starter / Growth / Pro). The team has decided to move to a new structure with clearer value separation and a separate usage add-on for a high-value feature (monitoring). This involves:
-
-- A new Pricing Plans page (new tier names, feature comparison table)
-- A revised Checkout page (handle upgrade, downgrade, and first-purchase flows)
-- A new Billing page (show current plan, usage breakdown, add-on management)
-- Quota enforcement logic (enforce new limits without surprising existing users)
-- A legacy-user migration plan (old plan → new plan mapping, grace period, notifications)
-- Automated email triggers (quota 80% warning, quota exhausted, plan upgrade confirmation)
+Your product has outgrown its original 3-tier pricing model. The team is moving to a new structure with a separate high-value feature add-on. This involves 6 interconnected sub-PRDs: Pricing page, Checkout, Billing, Quota enforcement, Legacy migration, and Email triggers.
 
 ### 2.2 Starting prompt
 
 ```
 /prd pricing-v3
 
-We're launching a redesigned pricing model. I need sub-PRDs for:
-1. Pricing Plans page — new tier structure, feature comparison table
-2. Checkout flow — upgrade / first-purchase / downgrade paths
-3. Billing page — current plan display, usage bar, add-on management
-4. Quota enforcement — graceful degradation when limits hit
-5. Legacy user migration — mapping old plans to new tiers, grace period
-6. Email triggers — quota warnings (80%, exhausted), plan change confirmations
+We're launching a redesigned pricing model with a separate add-on for monitoring.
+I need sub-PRDs for: Pricing page, Checkout, Billing, Quota enforcement,
+legacy user migration, and email triggers (quota warnings + plan changes).
 
 Core constraint: legacy users must never see a price increase without explicit opt-in.
 ```
 
-### 2.3 Workflow
+### 2.3 What happens first: knowledge base load
 
-1. **AI** reads `facts/[product].md` → loads current plan names, quotas, pricing
-2. **AI** surfaces any prior pricing decisions from `decisions/` ("did we decide why downgrade isn't self-serve?")
-3. **PM + AI** work through each sub-PRD in sequence, starting with the Pricing page (anchor for all others)
-4. For each sub-PRD, **AI** flags if a decision conflicts with `facts/` and marks it `[CONFLICT]`
-5. **AI** generates `features/pricing-v3/prd.md` — master document with links to each sub-PRD
-6. **AI** generates a migration mapping table: old plan → new plan → delta for each user type
-7. **PM** approves sub-PRDs one at a time
-8. **AI** auto-generates email copy for each trigger (quota warning, exhausted, upgrade confirmation)
-9. **AI** generates prototype HTML for Pricing page and Checkout flow
-10. **AI** commits and records decisions about migration rules
+HiveMind loads:
 
-### 2.4 What gets captured in the knowledge base
+- `facts/[product].md` → current plan names, quotas, and exact pricing numbers
+- `decisions/` → any prior decisions on downgrade behavior, top-up logic, and billing cycle rules
+- `memory/rules/product-facts-pricing.md` → authoritative pricing rules
 
-- `facts/[product].md` updated — new tier names and quotas become the authoritative source
-- `decisions/` — legacy user migration rules, why downgrade requires support, why the add-on is sold separately
-- `features/pricing-v3/` — all 6 sub-PRDs, prototypes, email copy, dev assets
+Any inconsistency between what you say and what's in `facts/` gets flagged as `[CONFLICT]` before the PRD is written.
 
-### 2.5 Done means
+### 2.4 How the questioning goes (one at a time)
+
+```
+AI: "The current facts say legacy Growth-plan users have 500 screenings/month.
+     Your new Essential tier has 300. If we're saying 'no price increase without opt-in,'
+     does that mean legacy Growth users keep 500, or do they get grandfathered
+     at the old price for the new 300-limit tier? These are different migration paths."
+
+PM: "They keep their quota at the old price for 6 months, then we prompt them."
+
+AI: "Got it. Does the 6-month grace period start on launch day for all legacy users,
+     or on each user's next renewal date? The billing page UI differs depending on this."
+
+PM: "Next renewal date."
+
+AI: "One more before I start the Pricing page: you mentioned a monitoring add-on.
+     Is it available on all plans, or only on paid plans? This affects the Pricing page
+     feature comparison table."
+```
+
+### 2.5 What gets committed
+
+```
+✅ Ready to commit — please review:
+
+  features/pricing-v3/prd.md                    (new — master doc, links all sub-PRDs)
+  features/pricing-v3/sub-prds/pricing-page.md  (new)
+  features/pricing-v3/sub-prds/checkout.md      (new)
+  features/pricing-v3/sub-prds/billing.md       (new)
+  features/pricing-v3/sub-prds/quota.md         (new)
+  features/pricing-v3/sub-prds/migration.md     (new — mapping table, grace period)
+  features/pricing-v3/sub-prds/emails.md        (new — 3 trigger scenarios)
+  decisions/decision-YYYYMMDD-pricing-v3-migration.md  (new)
+  facts/[product].md                            (updated — new tier names and quotas)
+```
+
+### 2.6 Done means
 
 - All sub-PRDs cross-reference consistently (same tier names, same quota numbers)
 - Migration table covers 100% of legacy plan types
-- Email copy for all 3 trigger scenarios is approved
+- `facts/[product].md` is updated — it's now the authoritative source for the new pricing
 
 ---
 
@@ -132,58 +180,64 @@ Core constraint: legacy users must never see a price increase without explicit o
 
 ### 3.1 Example situation
 
-Your SaaS product has added an embedded AI assistant that answers user questions in-app ("How do I export my results?", "What's included in the Pro plan?", "Why did this transaction get flagged?"). The assistant pulls answers from a structured knowledge base you own and maintain.
-
-The problem: the knowledge base was written once at launch and now has 3-month-old pricing, references deprecated features, and contradicts the current help docs. The PM needs to systematically rebuild and maintain it.
-
-The knowledge base needs sections for:
-- **User manual** — how to use each feature (step-by-step, user-facing)
-- **Pricing and plans** — current tiers, billing FAQ
-- **Common FAQ** — 40+ Q&A pairs from actual support tickets
-- **API reference** — for technical users and integration questions
+Your SaaS has added an embedded AI assistant that answers user questions in-app. The knowledge base was written at launch and is now 3 months out of date — wrong pricing, references to deprecated features, contradictions with current help docs.
 
 ### 3.2 Starting prompt
 
 ```
-/prd ai-assistant-knowledge-base
+/prd ai-assistant-kb
 
-I need to build and maintain a RAG knowledge base for our embedded AI assistant.
-It's structured by section — each H2 heading is an independent retrieval unit.
+Our embedded AI knowledge base is 3 months stale. I need to rebuild it systematically.
+Sections: user_manual/, pricing/, faq/ (~40 Q&A from real tickets), api_doc/.
 
-Sections needed:
-- user_manual/ — feature how-to guides (plain English, no internal jargon)
-- pricing/ — current plans, billing FAQ, payment methods
-- faq/ — ~40 Q&A pairs drawn from real support tickets
-- api_doc/ — REST/webhook reference, auth, rate limits, error codes
-
-Hard rules for all content:
-- Never mention unshipped features or pricing not yet live
-- Never document internal implementation (score algorithms, provider names, cost structure)
-- Every claim must trace to facts/ or approved-prds/ — no creative writing
+Hard rules: nothing unshipped, no internal implementation details,
+every claim must trace to facts/ or an approved PRD.
 ```
 
-### 3.3 Workflow
+### 3.3 What happens first: knowledge base load
 
-1. **AI** reads `facts/[product].md` → builds a list of what's currently live and confirmed
-2. **PM + AI** go section by section, starting with the highest-traffic section (usually FAQ)
-3. For FAQ: **PM** pastes a batch of real support tickets; **AI** extracts Q&A pairs and formats them
-4. **AI** flags any answer that would require claiming an unconfirmed feature → marks as `[NEEDS VERIFICATION]`
-5. For pricing: **AI** reads `facts/pricing.md` and generates the pricing section — no interpretation
-6. For user manual: **AI** generates step-by-step guides per feature, cross-referenced against the feature PRDs
-7. **PM** reviews each section for accuracy and tone
-8. **AI** commits to `lumi-knowledge/` (or your equivalent path) with a CHANGELOG note per section
-9. **AI** generates a maintenance rule: "this section must be updated whenever `facts/pricing.md` changes"
+HiveMind loads:
 
-### 3.4 What gets captured in the knowledge base
+- `facts/[product].md` → what's currently live and confirmed
+- `approved-prds/` → sources for any specific behavior claims
+- `memory/rules/rag-kb-authoring.md` → if it exists, the team's established KB authoring rules
 
-- `lumi-knowledge/` (or `ai-kb/`) — the published RAG content
-- `memory/rules/rag-kb-authoring.md` — authoring rules ("each H2 = independent retrieval unit", "no internal impl details")
-- `decisions/` — what gets excluded from the AI KB and why (pricing strategy, internal algorithms, unshipped features)
+It will not generate any KB content that can't be traced to one of these sources.
 
-### 3.5 Done means
+### 3.4 How the questioning goes (one at a time)
 
-- Every section traces to an authoritative source (`facts/` or `approved-prds/`)
-- Authoring rules are saved to `memory/rules/` so future updates follow the same standard
+```
+AI: "The current facts file doesn't specify the data export field count.
+     I see two different numbers across older PRDs: 13 fields and 22 fields.
+     Which is current? I won't write the export guide until this is confirmed."
+
+PM: "22 fields — that's the current version."
+
+AI: "Understood. For the FAQ section: do you want me to extract Q&A pairs
+     from the support tickets you paste, or should I draft FAQs based on
+     the existing facts file? The first approach is more grounded in real user confusion;
+     the second is faster but may miss what users actually ask."
+
+PM: "From tickets — I'll paste 20 samples now."
+```
+
+### 3.5 What gets committed
+
+```
+✅ Ready to commit — please review:
+
+  ai-kb/user_manual/feature-guide.md     (new — step-by-step, user-facing)
+  ai-kb/pricing/plans-and-billing.md     (new — current tiers only, no strategy info)
+  ai-kb/faq/common-faq.md               (new — 40 Q&A extracted from tickets)
+  ai-kb/api_doc/reference.md            (new — REST/webhook/auth)
+  memory/rules/rag-kb-authoring.md      (new — "each H2 = independent retrieval unit")
+  decisions/decision-YYYYMMDD-ai-kb-scope.md  (new — what was excluded and why)
+```
+
+### 3.6 Done means
+
+- Every section traces to an authoritative source in `facts/` or `approved-prds/`
+- Authoring rules saved to `memory/rules/` so future updates follow the same standard
 - AI assistant answers a representative set of 10 test questions without hallucinating
 
 ---
@@ -194,109 +248,135 @@ Hard rules for all content:
 
 ### 4.1 Example situation
 
-Your PM team has shipped 6 features over the past year. Three of them touch quota enforcement; two touch plan permissions. But nobody remembers:
-
-- Why the free plan gets 10 queries/month (not 5 or 20)
-- Why power users who exhaust their quota see a hard block (not a soft warning + auto-upgrade)
-- Why downgrading doesn't take effect until end of billing cycle
-
-These questions come up every sprint when engineers ask for "the rule" and PMs have to reconstruct the decision from memory or Slack search.
+Your PM team has shipped 6 features over the past year, three of them touching quota enforcement. But nobody remembers why the free plan gets 10 queries/month (not 5 or 20), why quota exhaustion triggers a hard block rather than a soft warning, or why downgrading doesn't take effect until end of billing cycle. These questions come up every sprint.
 
 ### 4.2 Starting prompt
 
 ```
 /prd decisions-audit
 
-I want to run a systematic decision audit for our quota and permission system.
-For each of these 4 questions, I want a formal decision log capturing
-the decision, the reason, the assumptions, and the edge cases:
+I want a formal decision log for 4 open questions in our quota and permission system:
+1. Why 10/month for the free plan, not another number
+2. Hard block on exhaustion vs. soft warning + auto-upgrade
+3. Downgrade effective date: immediate vs. end-of-cycle
+4. Why feature access is tied to quota balance, not plan tier alone
 
-1. Free plan quota: why 10/month, not a different number
-2. Hard block on quota exhaustion vs. soft warning + auto-upgrade
-3. Downgrade effective-date policy (immediate vs. end-of-cycle)
-4. Permission binding: why feature access is tied to quota balance, not to plan tier alone
-
-Pull any relevant history from existing decisions/ files before we discuss each one.
+Pull any relevant history from decisions/ before we discuss each one.
 ```
 
-### 4.3 Workflow
+### 4.3 What happens first: knowledge base load
 
-1. **AI** scans `decisions/` for any prior mentions of quota, permissions, or plan logic
-2. **AI** surfaces what's already decided vs. what was never formally recorded
-3. **PM + AI** work through each question — PM provides the original intent; AI asks clarifying questions
-4. For each decision, **AI** drafts a `decisions/decision-YYYYMMDD-[topic].md` with the standard template
-5. **PM** reviews — adjusts assumptions and open questions
-6. **AI** cross-links related decisions ("this quota decision assumes the same hard-block logic as decision-20250312-quota-exhaustion")
-7. **AI** generates a `memory/rules/quota-policy.md` — distilled, reusable policy rules for future PRDs
-8. Commit
+HiveMind scans `decisions/` for any prior mention of quota, permissions, or plan logic, then tells you upfront:
 
-### 4.4 What gets captured in the knowledge base
+```
+AI: "Found 2 relevant prior decisions:
+     - decision-20250312-quota-exhaustion.md: hard block was chosen for legal/compliance reasons.
+       This answers question 2 — do you want to re-open it, or just confirm and document it?
+     - decision-20250601-downgrade-policy.md: end-of-cycle was chosen to avoid proration complexity.
+       This answers question 3.
 
-- `decisions/` — 4 formal decision logs with rationale, assumptions, and edge cases
-- `memory/rules/quota-policy.md` — extracted policy rules that future PRDs auto-load
-- Future: when any feature touches quota, AI loads this rule set automatically
+     Questions 1 and 4 have no prior decision record. Starting with question 1."
+```
 
-### 4.5 Done means
+### 4.4 How the questioning goes (one at a time)
 
-- Each question has a written decision with the "why", not just the "what"
-- Cross-links between decisions are in place
+```
+AI: "For the free plan 10/month limit — was this number set based on
+     a cost model, a competitive benchmark, or a gut feel at the time?
+     I'm asking because if it was cost-based, the decision log should record the assumption
+     so we know when to revisit it."
+
+PM: "Gut feel, mostly — we wanted a number that felt generous enough to activate users
+     but low enough to push conversions."
+
+AI: "Then I'll document the assumption as: '10/month is a conversion-optimization guess,
+     not a cost-derived floor. Should be revisited with activation and conversion data
+     after 6 months.' Does that capture it accurately?"
+```
+
+### 4.5 What gets committed
+
+```
+✅ Ready to commit — please review:
+
+  decisions/decision-YYYYMMDD-free-quota-10.md       (new)
+  decisions/decision-YYYYMMDD-feature-permission-binding.md  (new)
+  memory/rules/quota-policy.md                       (new — distilled policy for future PRDs)
+```
+
+### 4.6 Done means
+
+- Each question has a written "why", not just a "what"
+- Cross-links between related decisions are in place
 - The next PM who asks "why is it 10/month?" can find the answer in under 30 seconds
 
 ---
 
 ## 5. Research-driven churn diagnosis
 
-**Use this when** you're seeing a metric drop (signups, activation, retention) and need to synthesize multiple data sources — usage analytics, support tickets, user interviews — into a structured set of hypotheses and next actions.
+**Use this when** you're seeing a metric drop and need to synthesize multiple data sources — usage analytics, support tickets, user interviews — into a structured set of hypotheses and next actions.
 
 ### 5.1 Example situation
 
-You notice that a month-over-month drop in 7-day retention for new free users. You have:
-
-- **Instrumentation data** — a funnel report showing where users drop off (signup → first action → return visit)
-- **Support tickets** — 3 months of tickets tagged "confusing" or "didn't understand how to"
-- **User interviews** — notes from 5 recent interviews with users who churned after their first week
-
-You want to synthesize these into: a ranked list of root causes, a decision about which one to address first, and a proposed fix.
+You notice a month-over-month drop in 7-day retention for new free users. You have funnel data (60% drop-off between first action and day-3 return visit), a sample of support tickets tagged "confusing", and notes from 5 user interviews with churned users.
 
 ### 5.2 Starting prompt
 
 ```
 /prd research churn-new-users-march
 
-I need to diagnose why new free users are churning in the first week.
+Diagnose why new free users are churning in the first week.
 
-Sources available:
-1. Funnel data: 60% drop-off between "first action" and "return visit on day 3" (I'll paste the numbers)
-2. Support tickets: 3 months of tickets tagged "confusing" — I'll paste a sample of 20
-3. Interview notes: 5 churned users from last month — I'll paste the notes
+Sources:
+1. Funnel data: 60% drop-off between "first action" and "day-3 return visit" (I'll paste)
+2. Support tickets: 20 samples tagged "confusing" (I'll paste)
+3. Interview notes: 5 churned users from last month (I'll paste)
 
-Goal: rank the top 3 root causes, pick the highest-leverage fix, and write a research summary
-I can share with the team.
+Goal: rank top 3 root causes, pick the highest-leverage fix, write a shareable research summary.
 ```
 
-### 5.3 Workflow
+### 5.3 What happens first: knowledge base load
 
-1. **PM** pastes funnel data; **AI** identifies the steepest drop-off step and frames hypotheses
-2. **PM** pastes support ticket sample; **AI** clusters them by theme ("didn't find X", "confused by Y"), quantifies
-3. **PM** pastes interview notes; **AI** extracts direct quotes and maps them to the hypothesis list
-4. **AI** ranks hypotheses by evidence weight: quantitative signal + qualitative signal + user quote
-5. **PM + AI** discuss the top hypothesis — rule out confounders, identify the simplest test
-6. **AI** writes `memory/research/churn-new-users-march.md` — structured research summary
-7. **AI** generates a `decisions/decision-YYYYMMDD-churn-fix-priority.md` — records why Hypothesis 1 was chosen over Hypothesis 2
-8. Commit
+HiveMind loads any prior research in `memory/research/` and any decisions that touch onboarding or activation, then tells you what's already known:
 
-### 5.4 What gets captured in the knowledge base
+```
+AI: "Found one prior research note: memory/research/activation-drop-q3.md.
+     It identified 'empty state on day 1' as a hypothesis but marked it unverified.
+     If your new data confirms or refutes this, we can close it.
+     Pasting your funnel data now — I'll start there."
+```
 
-- `memory/research/` — structured research summary (hypothesis, evidence, confidence level)
-- `decisions/` — prioritization rationale (why fix A before B, what signals drove the call)
-- Future: when working on onboarding, AI auto-loads this research as context
+### 5.4 How the questioning goes (one at a time)
 
-### 5.5 Done means
+```
+AI: "The funnel shows 60% drop between first action and day-3 return.
+     Does 'first action' mean completing a full task, or just starting one?
+     If users are starting but not finishing, that's a different problem
+     than users finishing but not coming back."
 
-- Top 3 hypotheses are ranked with evidence from at least 2 independent sources each
+PM: "Starting one — most don't complete their first task."
+
+AI: "That changes the hypothesis. Looking at the support tickets you pasted,
+     7 of 20 mention 'didn't understand the result' rather than 'couldn't do the action.'
+     That pattern points to result interpretation, not task flow.
+     Do you have data on which specific result type confused them most?"
+```
+
+### 5.5 What gets committed
+
+```
+✅ Ready to commit — please review:
+
+  memory/research/churn-new-users-march.md              (new — ranked hypotheses, evidence, confidence)
+  decisions/decision-YYYYMMDD-churn-fix-priority.md     (new — why fix A before B)
+```
+
+### 5.6 Done means
+
+- Top 3 hypotheses each have evidence from ≥ 2 independent sources
 - The chosen fix has a falsifiable success metric ("7-day retention improves by X% in 3 weeks")
 - Research summary is ≤ 1 page — readable by a PM who wasn't in the discussion
 
 ---
 
-*Have a scenario that doesn't fit these patterns? Open an [issue](https://github.com/eureka266/hive-mind/issues) or PR with your workflow.*
+*Have a scenario that doesn't fit these patterns? Open an [issue](https://github.com/eureka266/hive-mind/issues) or PR.*

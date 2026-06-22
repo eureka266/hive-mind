@@ -124,6 +124,10 @@ bash ~/hive-mind/codex/install.sh            # Codex
 | 草稿/讨论中断丢失 | 重新运行 `/prd [feature]`，HiveMind 会自动检测并提示恢复 |
 | HTML 原型怎么看 | Claude Code 用 `open <知识库>/features/[feature]/prototype.html`；VS Code 可用 Live Preview 插件 |
 
+## 致谢
+
+`/prd` 的追问逻辑——每次只问一个问题、先加载知识库再追问、拒绝模糊回答、不轻易放过没答清楚的问题——参考了 [gstack](https://github.com/garrytan/gstack) 的 `/office-hours`。`/prd review` 的逻辑参考了 gstack 的 `/plan-ceo-review`：前提挑战、范围风险、以及"六个月后你会不会后悔"式的反向追问，用在产品决策评审上。感谢 [@garrytan](https://github.com/garrytan)。
+
 ## 安全与边界
 
 - HiveMind 只读写**你指定的**本地知识库目录和 Git 仓库；不上传数据到任何第三方。
