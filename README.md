@@ -84,6 +84,102 @@ Works with both **Claude Code** and **Codex** right away. Talk naturally and Hiv
 
 Natural language also works: "let's discuss bulk import", "extract the key decisions from that meeting", "write a product blog post from the knowledge base".
 
+## What your knowledge base looks like after a few months
+
+Every HiveMind command writes into a structured Git repo. Here's what a real product team's knowledge base looks like after steady use:
+
+```
+team-knowledge/
+│
+├── facts/                          # Authoritative product truth (human-maintained)
+│   ├── your-product.md             #   Feature boundaries, limits, confirmed behaviors
+│   ├── glossary.md                 #   Shared terminology — prevents naming drift
+│   ├── guardrails.md               #   What AI must never claim (unshipped features, etc.)
+│   ├── customer-profiles.md        #   Target segments and ICP definitions
+│   └── internal/                   #   Internal impl details (never used in external copy)
+│
+├── features/                       # One workspace per feature — all context in one place
+│   ├── bulk-import/
+│   │   ├── README.md               #   Entry point, links to all artifacts
+│   │   ├── prd.md                  #   /prd → full PRD with facts, scope, open questions
+│   │   ├── workflow.yaml           #   /prd → state machine, components, validation rules
+│   │   ├── bulk-import-prototype.html  # /ui-draft → clickable single-file prototype
+│   │   ├── dev-assets/             #   /dev → impl plan, API contracts, test specs, checklist
+│   │   ├── memory.md               #   Session summary + candidate rules to promote
+│   │   ├── open-questions.md       #   Unresolved items for PM / eng / design sign-off
+│   │   └── handoff-status.md       #   Current state: draft | pending | ready-to-dev | shipped
+│   ├── pricing-v3/
+│   │   ├── prd.md
+│   │   ├── sub-prds/               #   Complex features get sub-PRDs per component
+│   │   │   ├── pricing-page.md
+│   │   │   ├── checkout.md
+│   │   │   ├── billing.md
+│   │   │   ├── quota-enforcement.md
+│   │   │   ├── migration.md
+│   │   │   └── email-triggers.md
+│   │   └── prototypes/
+│   └── monitor-upsell/
+│       ├── prd.md
+│       ├── workflow.yaml
+│       └── monitor-upsell-prototype.html
+│
+├── decisions/                      # Auto-generated after every /prd session
+│   ├── decision-20260617-bulk-import-limits.md     # What was decided + why + assumptions
+│   ├── decision-20260423-monitor-upsell-layers.md  # Alternatives considered, rationale
+│   └── decision-20260521-pricing-terminology.md    # Naming choices, definitions locked
+│
+├── memory/                         # Proactive memory — promoted from session reviews
+│   ├── rules/
+│   │   ├── pm-process.md           #   Cross-feature PM process rules
+│   │   ├── product-facts-pricing.md #  Pricing policy rules for future PRDs
+│   │   └── rag-kb-authoring.md     #   Rules for maintaining the AI assistant KB
+│   ├── research/
+│   │   └── churn-new-users-march.md # /prd research → ranked hypotheses + evidence
+│   └── journal/                    # Timeline of significant knowledge base changes
+│
+├── approved-prds/                  # Finalized PRDs (authoritative reference source)
+│   ├── [20260410]-pricing-v3/
+│   └── [20260303]-bulk-import/
+│
+├── drafts/                         # In-progress PRDs still being discussed
+├── pending/                        # Paused, blocked, or waiting for input
+├── archive/                        # Abandoned or superseded — never deleted, just moved
+│
+├── assets/
+│   └── emails/                     # /email → one folder per campaign
+│       ├── 2026-05-25-product-update-may/
+│       │   ├── brief.md            #   Campaign brief and approval notes
+│       │   ├── content.md          #   Approved copy
+│       │   └── email.html          #   Ready-to-send HTML
+│       └── 2026-06-02-quota-exhausted-nudge/
+│           ├── content.md
+│           └── email.html
+│
+├── ai-kb/                          # /prd lumi → RAG knowledge base for embedded AI assistant
+│   ├── user_manual/
+│   │   ├── onboarding.md           #   First 4 things new users need to know
+│   │   ├── feature-guide.md        #   Step-by-step how-to per feature
+│   │   ├── data-export-guide.md    #   Export fields and formats
+│   │   └── notification-channels.md
+│   ├── pricing/
+│   │   ├── plans-and-billing.md    #   Current tiers, quotas, billing FAQ
+│   │   └── payment-methods.md
+│   ├── faq/
+│   │   ├── product-qa.md           #   40+ Q&A extracted from real support tickets
+│   │   └── presales-guidance.md    #   Sales FAQ for pre-purchase questions
+│   └── api_doc/
+│       ├── reference.md            #   REST / webhook / auth / rate limits
+│       └── error-messages.md
+│
+├── competitors/                    # /prd competitor → structured competitive research
+│   ├── competitor-a.md
+│   └── competitor-b.md
+│
+└── scripts/                        # Automation (quota tables, prototype refresh, etc.)
+```
+
+The repo is fully yours — HiveMind writes to it, but never reads it remotely or uploads anything. Your team clones it; new hires read `facts/` and `decisions/` to get up to speed without onboarding calls.
+
 ## What happens in one discussion
 
 One `/prd bulk-import` and your team walks away with:

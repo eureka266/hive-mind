@@ -84,6 +84,102 @@ npx skills add eureka266/hive-mind
 
 也支持自然语言：「讨论一下批量导入这个功能」「把刚才的会议纪要提取成决策」「从知识库写一篇产品博客」。
 
+## 沉淀几个月后，知识库长什么样
+
+HiveMind 的每条指令都会往一个结构化 Git 仓库里写内容。以下是一个产品团队持续使用几个月后，知识库的真实形态：
+
+```
+team-knowledge/
+│
+├── facts/                           # 产品事实权威来源（人工维护）
+│   ├── your-product.md              #   功能边界、限制、已确认的行为
+│   ├── glossary.md                  #   共享术语表——防止命名混乱
+│   ├── guardrails.md                #   AI 绝不能声称的内容（未上线功能等）
+│   ├── customer-profiles.md         #   目标用户画像和 ICP 定义
+│   └── internal/                    #   内部实现细节（不用于对外内容）
+│
+├── features/                        # 每个需求一个 workspace——所有上下文集中在一处
+│   ├── bulk-import/
+│   │   ├── README.md                #   入口，链接所有产物
+│   │   ├── prd.md                   #   /prd → 完整 PRD，含事实、范围、待确认问题
+│   │   ├── workflow.yaml            #   /prd → 状态机、组件、校验规则
+│   │   ├── bulk-import-prototype.html  # /ui-draft → 可点击单文件原型
+│   │   ├── dev-assets/              #   /dev → 实现方案、接口契约、测试规格、开发 checklist
+│   │   ├── memory.md                #   会话摘要 + 候选沉淀规则
+│   │   ├── open-questions.md        #   等待 PM / 研发 / 设计确认的问题
+│   │   └── handoff-status.md        #   当前状态：draft | pending | ready-to-dev | shipped
+│   ├── pricing-v3/
+│   │   ├── prd.md
+│   │   ├── sub-prds/                #   复杂需求按模块拆子 PRD
+│   │   │   ├── pricing-page.md
+│   │   │   ├── checkout.md
+│   │   │   ├── billing.md
+│   │   │   ├── quota-enforcement.md
+│   │   │   ├── migration.md
+│   │   │   └── email-triggers.md
+│   │   └── prototypes/
+│   └── monitor-upsell/
+│       ├── prd.md
+│       ├── workflow.yaml
+│       └── monitor-upsell-prototype.html
+│
+├── decisions/                       # /prd 会话结束后自动生成
+│   ├── decision-20260617-bulk-import-limits.md     # 决定了什么 + 原因 + 假设条件
+│   ├── decision-20260423-monitor-upsell-layers.md  # 被否掉的方案及理由
+│   └── decision-20260521-pricing-terminology.md    # 命名选择、定义锁定
+│
+├── memory/                          # 主动记忆——从会话 Memory Review Gate 中晋升
+│   ├── rules/
+│   │   ├── pm-process.md            #   跨功能 PM 流程规则
+│   │   ├── product-facts-pricing.md #   定价策略规则，供未来 PRD 自动加载
+│   │   └── rag-kb-authoring.md      #   AI 助手知识库的撰写规范
+│   ├── research/
+│   │   └── churn-new-users-march.md # /prd research → 假设排名 + 证据来源
+│   └── journal/                     # 重要知识库变更的时间线记录
+│
+├── approved-prds/                   # 已批准的 PRD（权威引用来源）
+│   ├── [20260410]-pricing-v3/
+│   └── [20260303]-bulk-import/
+│
+├── drafts/                          # 仍在讨论中的 PRD 草稿
+├── pending/                         # 暂停、阻塞或等待输入的需求
+├── archive/                         # 已放弃或被替代——永不删除，只移动
+│
+├── assets/
+│   └── emails/                      # /email → 每次邮件任务一个文件夹
+│       ├── 2026-05-25-product-update-may/
+│       │   ├── brief.md             #   邮件 brief 和确认记录
+│       │   ├── content.md           #   已审核的正文
+│       │   └── email.html           #   可直接发送的 HTML
+│       └── 2026-06-02-quota-exhausted-nudge/
+│           ├── content.md
+│           └── email.html
+│
+├── ai-kb/                           # /prd lumi → 嵌入式 AI 助手的 RAG 知识库
+│   ├── user_manual/
+│   │   ├── onboarding.md            #   新用户最需要了解的 4 件事
+│   │   ├── feature-guide.md         #   各功能的分步使用指引
+│   │   ├── data-export-guide.md     #   导出字段和格式说明
+│   │   └── notification-channels.md
+│   ├── pricing/
+│   │   ├── plans-and-billing.md     #   当前套餐、配额、账单 FAQ
+│   │   └── payment-methods.md
+│   ├── faq/
+│   │   ├── product-qa.md            #   从真实支持工单提取的 40+ 条 Q&A
+│   │   └── presales-guidance.md     #   售前 FAQ
+│   └── api_doc/
+│       ├── reference.md             #   REST / Webhook / 鉴权 / 速率限制
+│       └── error-messages.md
+│
+├── competitors/                     # /prd competitor → 结构化竞品调研
+│   ├── competitor-a.md
+│   └── competitor-b.md
+│
+└── scripts/                         # 自动化脚本（配额表生成、原型刷新等）
+```
+
+这个仓库完全属于你——HiveMind 负责写入，不会远程读取或上传任何内容。团队 clone 下来；新人读 `facts/` 和 `decisions/` 就能快速了解产品背景，不需要专门的交接会议。
+
 ## 讨论一次会发生什么
 
 一句「`/prd 批量导入功能`」开始，讨论完毕时你会得到：
