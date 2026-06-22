@@ -8,7 +8,23 @@ Use for product discussion, `/prd`, meeting-note extraction, and PRD drafting.
 - Meeting-note mode: extract durable decisions from pasted notes.
 - Push/update mode: write approved local changes to the knowledge repo after user approval.
 
-## Phase 0: Hard Discovery
+## Phase 0: KB Health Check (runs before everything else)
+
+Before any discussion, verify the knowledge base is ready:
+
+1. Check if `~/team-knowledge` (or `$KNOWLEDGE_DIR`) exists and is a git repo.
+2. If **missing**: pause and run the KB setup wizard —
+   - Ask: does the team have an existing GitHub repo? → clone it
+   - Or: create a new one via `gh repo create` (fallback: guide manual creation)
+   - Or: local-only `git init` mode
+   - Auto-create directory structure: `facts/`, `decisions/`, `features/`, `memory/rules/`, `memory/research/`, `approved-prds/`, `drafts/`, `assets/emails/`
+   - After wizard completes, resume this command automatically
+3. If **exists but incomplete**: silently create any missing required directories, then continue
+4. If **healthy**: proceed
+
+---
+
+## Phase 0b: Hard Discovery
 
 Before free discussion, ask 4 to 6 focused questions. Skip only when the user explicitly asks to skip or provides enough detail.
 
