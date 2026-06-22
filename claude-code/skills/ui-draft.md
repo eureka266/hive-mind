@@ -44,6 +44,24 @@ HiveMind 的原型生成命令。从 `/prd` 产出的交互定义，生成可点
 
 ## 工作流
 
+### Phase 0: 知识库健康检查（自动）
+
+在执行本命令的任何步骤之前，先确认知识库就绪：
+
+```bash
+KB_DIR="${KNOWLEDGE_DIR:-$HOME/team-knowledge}"
+if [ -d "$KB_DIR/.git" ]; then
+  echo "KB_STATUS: exists"
+else
+  echo "KB_STATUS: missing"
+fi
+```
+
+- `KB_STATUS: exists` → 继续
+- `KB_STATUS: missing` → 暂停，进入 `/kb-setup` 向导（见 `claude-code/skills/kb-setup.md`）；向导完成后自动继续本命令
+
+---
+
 ### 生成原型: `/ui-draft [feature]`
 
 1. **同步远端知识库**

@@ -33,6 +33,24 @@ HiveMind 的研发准备命令。用于 PRD 完成产品审查后，帮助研发
 
 ## 工作流一：生成开发准备资产
 
+### Phase 0: 知识库健康检查（自动）
+
+在执行本命令的任何步骤之前，先确认知识库就绪：
+
+```bash
+KB_DIR="${KNOWLEDGE_DIR:-$HOME/team-knowledge}"
+if [ -d "$KB_DIR/.git" ]; then
+  echo "KB_STATUS: exists"
+else
+  echo "KB_STATUS: missing"
+fi
+```
+
+- `KB_STATUS: exists` → 继续阶段 1
+- `KB_STATUS: missing` → 暂停当前命令，进入 `/kb-setup` 向导（见 `claude-code/skills/kb-setup.md`）；向导完成后自动继续本命令
+
+---
+
 ### 阶段 1: 定位 PRD
 
 1. 进入知识库：

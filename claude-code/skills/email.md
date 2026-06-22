@@ -27,15 +27,27 @@ HiveMind 的产品邮件命令。用于生成产品通知、邮件营销、newsl
 
 `/gtm` 中出现产品通知邮件、邮件营销、newsletter、客户邮件或 HTML 邮件意图时，也应转入本工作流。
 
+## Phase 0: 知识库健康检查（自动）
+
+在执行本命令的任何步骤之前，先确认知识库就绪：
+
+```bash
+KB_DIR="${KNOWLEDGE_DIR:-$HOME/team-knowledge}"
+if [ -d "$KB_DIR/.git" ]; then
+  echo "KB_STATUS: exists"
+else
+  echo "KB_STATUS: missing"
+fi
+```
+
+- `KB_STATUS: exists` → 继续阶段 1
+- `KB_STATUS: missing` → 暂停，进入 `/kb-setup` 向导（见 `claude-code/skills/kb-setup.md`）；向导完成后自动继续本命令
+
+---
+
 ## 阶段 1: 拉取并同步知识库
 
-1. 确保本地存在团队知识库。若不存在，先 clone：
-
-   ```bash
-   git clone https://github.com/your-org/team-knowledge.git ~/team-knowledge
-   ```
-
-2. 进入知识库并同步最新内容：
+1. 进入知识库并同步最新内容（Phase 0 已确认目录存在）：
 
    ```bash
    cd ~/team-knowledge

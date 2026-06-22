@@ -32,6 +32,7 @@ register_skill() {
     echo -e "${COLOR_GREEN}✓ /$name 已注册${COLOR_RESET}"
 }
 
+register_skill kb-setup "$SKILL_SRC/skills/kb-setup.md"
 register_skill prd "$SKILL_SRC/skills/prd.md"
 register_skill prd-review "$SKILL_SRC/skills/prd-review.md"
 register_skill research "$SKILL_SRC/skills/research.md"

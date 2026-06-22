@@ -215,6 +215,31 @@ HiveMind 的产品讨论命令。支持多种工作模式和自动更新：
 
 ---
 
+### Phase 0: 知识库健康检查（自动）
+
+在执行本命令的任何步骤之前，先确认知识库就绪：
+
+```bash
+KB_DIR="${KNOWLEDGE_DIR:-$HOME/team-knowledge}"
+if [ -d "$KB_DIR/.git" ]; then
+  echo "KB_STATUS: exists"
+else
+  echo "KB_STATUS: missing"
+fi
+```
+
+- `KB_STATUS: exists` → 继续阶段 1
+- `KB_STATUS: missing` → 暂停当前命令，进入 `/kb-setup` 向导（见 `claude-code/skills/kb-setup.md`）
+
+  向导完成后，**自动继续本命令**，用户无需重新输入 `/prd [feature]`。
+
+  向导会处理三种情况：
+  - 连接团队已有的 GitHub 仓库（`git clone`）
+  - 新建 GitHub 仓库并推送初始结构（`gh repo create`）
+  - 本地模式（`git init`，无远端）
+
+---
+
 ### 阶段 1: 初始化
 
 运行命令后，系统自动:
