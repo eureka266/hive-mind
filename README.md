@@ -52,19 +52,37 @@ Works with both **Claude Code** and **Codex** right away. Talk naturally and Hiv
 
 > Want native slash commands (`/prd`, `/dev`, `/ui-draft`), auto-update, and team setup? See [Team Setup](#team-setup-optional) below.
 
-## How you'll use it (real PM scenarios)
+## How your team uses it
 
+**Product Manager**
 ```
-/prd bulk-import feature              # discuss needs → extract facts and decisions
-/prd review bulk-import               # PRD review from a product lead's angle
-/prd research why users churn in March # combine analytics, feedback, and support tickets
-/dev bulk-import                      # gen engineering handoff (plan, contracts, tests)
-/ui-draft payment flow optimization   # turn interaction discussion into clickable prototype
-/gtm how we compare to competitors    # generate positioning, sales talk, marketing assets
-/email draft product-update email     # template-based, ready-to-send HTML
+/prd bulk-import feature              # discuss requirements → AI extracts facts, decisions, workflows
+/prd review payment-flow              # PRD review: challenge scope, premises, and "6-month regret" risks
+/prd research why users churn in March # synthesize analytics, support tickets, and interview notes
+/prd docs export-feature              # generate user-facing help docs from PRD
+/prd competitor chainalysis           # structured competitive analysis saved to knowledge base
 ```
 
-Natural language also works: "let's discuss bulk import", "extract the key decisions from that meeting".
+**Engineer**
+```
+/dev bulk-import                      # generate handoff: implementation plan, API contracts, test specs, checklist
+/dev bulk-import challenge            # adversarial review: find edge cases and missing error handling
+```
+
+**Designer**
+```
+/ui-draft payment flow optimization   # turn interaction discussion into a clickable single-file HTML prototype
+/ui-draft bulk-import --figma         # generate prototype and sync frames to Figma
+```
+
+**Marketing / GTM**
+```
+/gtm how we compare to competitors    # generate positioning doc, sales talk tracks, one-pagers
+/email product-update May             # draft product update email as ready-to-send HTML
+/email free-user-upgrade-nudge        # trigger-based email: quota warning, upsell copy
+```
+
+Natural language also works: "let's discuss bulk import", "extract the key decisions from that meeting", "write a product blog post from the knowledge base".
 
 ## What happens in one discussion
 
