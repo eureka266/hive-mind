@@ -3,8 +3,8 @@
 
 name: hive-mind
 display_name: HiveMind Skill
-version: 0.0.16
-release_date: 2026-06-17
+version: 0.0.17
+release_date: 2026-06-22
 
 description: >
   从产品讨论自动沉淀知识资产（事实、决策、交互流程），生成可复用的 UI 原型。
@@ -123,6 +123,22 @@ commands:
       - "/email 给完成 CSV 导入的用户写 onboarding follow-up 邮件"
       - "/email 面向付费用户写 plan renewal reminder"
 
+  - name: product-video
+    description: 基于产品知识库和品牌设计，使用 Remotion 生成产品演示、功能教程、更新公告等动画视频，并沉淀到资产库
+    trigger: "/video"
+    environment: any
+    subcommands:
+      - "--tutorial"
+      - "--comparison"
+      - "--workflow"
+      - "--help"
+    examples:
+      - "/video 制作一个 dashboard 新功能的 30 秒演示动图"
+      - "/video 产品更新：为新的 AI 分析功能制作推广动图"
+      - "/video --tutorial 为'导入数据'功能制作 60 秒教程视频"
+      - "/video --comparison 演示你的产品 vs 竞品 A 的对比动图"
+      - "/video --workflow 制作'生成报告'这个核心流程的讲解动画"
+
 # 知识库配置
 knowledge_base:
   type: github
@@ -182,6 +198,14 @@ features:
   - id: decision_logging
     name: 决策日志
     description: 记录设计决策、考虑的替代方案、将来的改进条件
+
+  - id: product_animation_generation
+    name: 产品动图与视频生成
+    description: 基于产品知识库和品牌设计，使用 Remotion 生成产品演示、教程和推广视频
+
+  - id: content_marketing_asset_library
+    name: 内容营销资产库
+    description: 自动沉淀生成的视频到知识库 assets/animations，支持多格式输出（MP4/GIF/WebM）
 
 # 权限要求
 permissions:

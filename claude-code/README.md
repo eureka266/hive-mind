@@ -1,7 +1,9 @@
 # HiveMind — Claude Code 版
 
-> Claude Code 专属安装包。提供 `/prd` 命名空间（需求、research、review、docs、prompt、competitor、assets、clean）、`/dev`、`/ui-draft`、`/gtm`、`/email` 和 `/hive-mind-update`，将产品讨论、知识库维护、审查结论、研发准备资产、商业化内容框架、邮件 HTML 资产和可点击原型转化为可追溯知识资产。
+> Claude Code 专属安装包。提供 `/prd` 命名空间（需求、research、review、docs、prompt、competitor、assets、clean）、`/dev`、`/ui-draft`、`/gtm`、`/email`、`/video` 和 `/hive-mind-update`，将产品讨论、知识库维护、审查结论、研发准备资产、商业化内容框架、邮件 HTML 资产、产品动图视频和可点击原型转化为可追溯知识资产。
 > 支持 **终端 Claude Code** 和 **VS Code Claude Code 插件**，安装步骤完全相同。
+>
+> **v0.0.18 新增**：`/video` 脚本优先工作流 — 产品视频生成指令（4 阶段 Phase + 确认门），采用 Trellis 灵感的 Token 节省设计。生成脚本→用户确认→代码一次性生成→本地渲染，全程支持品牌自动化和知识库集成。
 >
 > **v0.0.16 新增**：`/prd` 命名空间统一承载 research、review、docs knowledge、prompt、competitor、assets 和 clean 等 PM 知识库维护模式。
 >
@@ -32,7 +34,7 @@ bash ~/Work/Project/hive-mind/claude-code/install.sh
 | `KNOWLEDGE_DIR` | `$INSTALL_DIR/knowledge` | 知识库目录 |
 
 安装脚本自动检测 SSH/HTTPS 协议、克隆仓库、注册 skill 命令并配置自动更新 hook。
-安装完成后自动注册九个 skill：`/prd`、`/research`、`/prd-review`、`/dev`、`/ui-draft`、`/gtm`、`/email`、`/hive-mind-update`、`/hive-mind`。其中 PM 知识库维护主入口是 `/prd <子用法>`；`/research` 和 `/prd-review` 作为团队习惯 alias 保留。
+安装完成后自动注册 11 个 skill：`/prd`（包含 research、review、docs、prompt、competitor、assets、clean 子用法）、`/prd-review`（alias）、`/research`（alias）、`/dev`、`/ui-draft`、`/gtm`、`/email`、`/video`、`/hive-mind-update` 和 `/hive-mind`。
 Skill 存储在 `~/.claude/skills/`，终端和 VS Code 共享同一份，无需重复安装。
 
 ---
@@ -67,6 +69,8 @@ code --install-extension anthropic.claude-code
 /ui-draft --figma batch-screening
 /gtm 写一篇你的产品相比竞品的核心优势文章
 /email 写一封产品更新邮件，中文和英文，生成 HTML 并保存到资产库
+/video 制作一个 dashboard 新功能的 30 秒演示动图
+/video --tutorial 为"导入数据"功能制作 60 秒教程视频
 /hive-mind-update
 ```
 
@@ -353,6 +357,69 @@ AI 将草稿整理后写入 `approved-prds/`，并删除草稿文件。
 
 `/dev` 关注工程落地：实现方案、API/数据契约、测试规格、开发检查清单、上线风险和 `[待工程确认]` 项。资产主路径写入 `features/[feature]/dev-assets/`（legacy `dev-assets/[feature]/` 保留副本），工程挑战结论写入 `decisions/`。结束前进入 Memory Review Gate，可沉淀工程规则到 `memory/rules/`。
 
+### `/video [topic]` — 脚本优先工作流
+
+```bash
+/video 制作一个 dashboard 新功能的 30 秒演示动图
+/video --tutorial 为"导入数据"功能制作 60 秒教程视频
+/video --comparison 演示你的产品 vs 竞品 A 的对比动图
+/video --workflow 制作"生成报告"这个核心流程的讲解动画
+```
+
+**核心工作流**（4 阶段 + 确认门）：
+
+```
+Phase 1: 脚本生成 (轻量)
+  读取: workflows/ + PRD
+  输出: 纯文本脚本 (YAML)
+  Token: ~1300 | 时间: ~5 min
+  
+  ↓ [停止] 等用户审视脚本
+  
+[确认门] 用户选择:
+  ✅ 是的，继续
+  🔧 改脚本（回到 Phase 1 修改）
+  🔄 重新来（新方向）
+  
+  ↓ (如需改脚本)
+  Phase 2: 脚本修订 (可选)
+    仅改动指定部分
+    Token: ~600 | 时间: ~3 min
+    → 再次确认
+  
+  ↓
+Phase 3: 代码生成 (丰富)
+  前提: 脚本已确认 ✓
+  读取: 脚本 + facts/product.md (品牌) + assets/
+  输出: VideoScene.tsx (完整 Remotion 代码)
+  Token: ~2200 | 时间: ~2 min
+  
+  ↓
+Phase 4: 本地渲染
+  npm install remotion ffmpeg-static
+  npx remotion preview       (可选：预览)
+  npx remotion render out.mp4
+  时间: ~10 min (含渲染)
+  
+  ↓
+完成 ✅ out.mp4 + 沉淀到知识库
+```
+
+**Token 效率对比**：
+- ❌ 直接生成代码（旧）：单次 3000 tokens，失败需重做 6000+ tokens
+- ✅ 脚本优先（新）：3500-4100 tokens，迭代时节省 30%，失败时节省 50%+
+
+**品牌自动化**：
+- 自动读取 `facts/product.md` 的品牌色 `#8DC8E8` (蓝)、强调色 `#FF7F32` (橙)、背景色等
+- 生成的 Remotion 代码自动注入 `BRAND` 常量，无需手工配置
+
+**文档导航**：
+- 🚀 **10 分钟快速启动**：[product-video-quickstart.md](skills/product-video-quickstart.md)
+- 📖 **完整工作流指南**：[product-video.md](skills/product-video.md)（含 4 Phase 详解、脚本格式、Asset 清单）
+- 🤖 **Agent 实现参考**：[codex/references/product-video-workflow.md](../codex/references/product-video-workflow.md)
+- 🏗️ **架构设计文档**：[VIDEO_WORKFLOW_ARCHITECTURE.md](../VIDEO_WORKFLOW_ARCHITECTURE.md)（为什么脚本优先、Token 效率分析、Trellis 启发）
+- 🔍 **MCP 方案分析**：[VIDEO_WORKFLOW_MCP_ANALYSIS.md](../VIDEO_WORKFLOW_MCP_ANALYSIS.md)（MCP 对比、可行性评估）
+
 ### `/hive-mind-update`
 
 ```bash
@@ -380,6 +447,32 @@ AI 将草稿整理后写入 `approved-prds/`，并删除草稿文件。
 ```
 
 `/email` 面向产品通知、邮件营销、newsletter、客户邮件、销售触达和续费提醒。它会先同步知识库，再读取产品事实、PRD、decision、FAQ、用户手册、API 文档、竞品资料和 `assets-index.md`；确认后把 `brief.md`、`content.{lang}.md`、`render-input.{lang}.json`、`email.{lang}.html` 和 `metadata.json` 保存到 `assets/emails/`，并更新资产索引。`/email` 只生成内容和 HTML，不发送 Gmail、不创建 Gmail 草稿、不读取 OAuth 或 `.env`。
+
+### `/video [topic]`
+
+```bash
+/video 制作一个 dashboard 新功能的 30 秒演示动图
+/video 产品更新：为新的 AI 分析功能制作推广动图
+/video --tutorial 为"导入数据"功能制作 60 秒教程视频
+/video --comparison 演示你的产品 vs 竞品 A 的对比动图
+/video --workflow 制作"生成报告"这个核心流程的讲解动画
+```
+
+`/video` 面向产品演示、内容营销、视频营销和社交媒体。采用**脚本优先确认工作流**，4 个阶段：
+
+1. **Phase 1: 脚本生成（轻量）** — 读 `workflows/` + PRD，生成纯文本脚本（~5 min，~1300 tokens）
+2. **[确认门]** — 你审视脚本，确认方向正确（防止浪费 token）
+3. **Phase 3: 代码生成（丰富）** — 注入品牌色、logo，生成完整 Remotion TypeScript（~2 min，~2200 tokens，一次性）
+4. **Phase 4: 本地渲染** — 你本地 `npm install + render`，视频沉淀到 `assets/videos/`
+
+**核心特点**：
+- ✅ 脚本优先，用户提前看到方向
+- ✅ 脚本修改轻量（~600 tokens），防止代码重复生成
+- ✅ 品牌自动化：自动读取 `facts/product.md` 的品牌色、logo、产品信息
+- ✅ Token 高效：迭代场景节省 30%，失败场景节省 50%+
+- ✅ 知识库集成：脚本基于 `workflows/` 和 PRD，有上下文
+
+详见：[product-video-quickstart.md](skills/product-video-quickstart.md)（10 分钟快速启动）和 [product-video.md](skills/product-video.md)（完整工作流）。
 
 ---
 
@@ -428,24 +521,31 @@ team-knowledge/
 ```
 claude-code/
 ├── skills/
-│   ├── prd.md            # /prd 命令定义
-│   ├── research.md       # /research 命令定义
-│   ├── prd-review.md     # /prd-review 命令定义
-│   ├── dev.md            # /dev 命令定义
-│   ├── gtm.md            # /gtm 命令定义
-│   ├── email.md          # /email 命令定义
-│   ├── hive-mind-update.md # /hive-mind-update 命令定义
-│   └── ui-draft.md       # /ui-draft 命令定义
-├── email/                 # /email HTML 合成脚本和完整邮件模板
-├── install.sh             # 一键安装脚本
-├── install-enterprise.sh  # 企业多人部署脚本
-├── update.sh              # 更新脚本
-├── PACKAGE.md             # 完整工作流文档（10 个提取规则等）
-├── package.yaml           # 版本和配置元数据
+│   ├── prd.md                    # /prd 命令定义
+│   ├── research.md               # /research 命令定义
+│   ├── prd-review.md             # /prd-review 命令定义
+│   ├── dev.md                    # /dev 命令定义
+│   ├── gtm.md                    # /gtm 命令定义
+│   ├── email.md                  # /email 命令定义
+│   ├── product-video.md          # /video 命令定义（完整 4 Phase 工作流）
+│   ├── product-video-quickstart.md # /video 快速启动指南（10 分钟上手）
+│   ├── hive-mind-update.md       # /hive-mind-update 命令定义
+│   └── ui-draft.md               # /ui-draft 命令定义
+├── email/                         # /email HTML 合成脚本和完整邮件模板
+├── install.sh                     # 一键安装脚本
+├── install-enterprise.sh          # 企业多人部署脚本
+├── update.sh                      # 更新脚本
+├── PACKAGE.md                     # 完整工作流文档（10 个提取规则等）
+├── package.yaml                   # 版本和配置元数据
 └── scripts/
-    ├── check-updates.sh   # Claude Code PreToolUse 自动更新入口
-    ├── register-skills.sh # 安装或更新后重新注册 skill 命令
-    └── test-setup.sh      # 验证安装脚本
+    ├── check-updates.sh           # Claude Code PreToolUse 自动更新入口
+    ├── register-skills.sh         # 安装或更新后重新注册 skill 命令
+    └── test-setup.sh              # 验证安装脚本
+
+# 根目录架构和设计文档
+├── VIDEO_WORKFLOW_ARCHITECTURE.md # /video 设计文档（为什么脚本优先）
+├── VIDEO_WORKFLOW_MCP_ANALYSIS.md # MCP 方案对比分析（MCP vs 脚本优先 vs 混合）
+└── VIDEO_WORKFLOW_SUMMARY.md      # 改造总结文档
 ```
 
 自动更新依赖 `$SKILL_DIR` 是 git clone。`install.sh` 会写入 PreToolUse hook，hook 调用 `scripts/check-updates.sh`；有新版本时脚本会 `git pull` 并调用 `scripts/register-skills.sh`。如果通过复制目录或压缩包离线安装，缺少 `.git` 时自动更新会跳过。
