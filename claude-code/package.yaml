@@ -1,0 +1,310 @@
+# HiveMind Skill - Enterprise Package
+# 企业级 Skill 包配置
+
+name: hive-mind
+display_name: HiveMind Skill
+version: 0.0.16
+release_date: 2026-06-17
+
+description: >
+  从产品讨论自动沉淀知识资产（事实、决策、交互流程），生成可复用的 UI 原型。
+  支持长讨论草稿保存、自动化交互定义提取、HTML 原型生成。
+
+author:
+  name: HiveMind
+  email: you@example.com
+
+# 支持的 Claude 版本
+claude_versions:
+  min: "4.5"
+  tested: ["4.5", "4.6"]
+
+# 系统要求
+requirements:
+  - git: "2.20.0"
+  - bash: "4.0"
+  - curl: "7.0"
+
+# Skill 命令
+commands:
+  - name: prd-discuss
+    description: 产品知识库维护主入口：讨论 PRD，维护 research、review、docs、prompt、competitor、assets 和 clean 子用法
+    trigger: "/prd"
+    environment: any
+    examples:
+      - "/prd csv-import"
+      - "/prd research detail-page-optimization"
+      - "/prd review csv-import"
+      - "/prd docs dashboard notification channels"
+      - "/prd prompt pricing advisor"
+      - "/prd competitor a competitor"
+      - "/prd assets scan"
+      - "/prd clean"
+
+  - name: ui-draft
+    description: 从交互定义生成可点击的 HTML UI 原型
+    trigger: "/ui-draft"
+    environment: any
+    subcommands:
+      - "edit"      # /ui-draft edit csv-import
+      - "view"      # /ui-draft view csv-import
+      - "export"    # /ui-draft export csv-import --format=figma
+    examples:
+      - "/ui-draft csv-import"
+      - "/ui-draft edit csv-import"
+      - "/ui-draft export csv-import --format=figma"
+
+  - name: prd-review
+    description: 从 CEO/产品负责人视角审查 PRD 的价值、范围、风险和交付可行性；兼容入口，主用法为 /prd review
+    trigger: "/prd-review"
+    environment: any
+    subcommands:
+      - "--draft"
+      - "--approved"
+    examples:
+      - "/prd review csv-import"
+      - "/prd-review csv-import"
+      - "/prd-review --draft assistant-onboarding"
+      - "/prd-review --approved user-onboarding"
+
+  - name: research
+    description: 整理用户访谈、客户反馈和需求收集材料，写入 memory/research/ 并同步 feature-backlog.md 轻量信号；兼容入口，主用法为 /prd research
+    trigger: "/research"
+    environment: any
+    examples:
+      - "/prd research detail-page-optimization"
+      - "/research detail-page-optimization"
+      - "/research 整理这 4 个用户访谈，标出 PRD gap 和冲突"
+
+  - name: dev
+    description: 根据 PRD 生成研发准备资产，或通过工程挑战模式沉淀技术风险和决策
+    trigger: "/dev"
+    environment: any
+    subcommands:
+      - "--ask"
+      - "--challenge"
+      - "--from-approved"
+      - "--preview"
+    examples:
+      - "/dev csv-import"
+      - "/dev --ask assistant-onboarding"
+      - "/dev --challenge assistant-onboarding"
+      - "/dev --from-approved user-onboarding"
+
+  - name: hive-mind-update
+    description: 手动检查并更新 HiveMind Skill，更新后重新注册所有 skill 命令
+    trigger: "/hive-mind-update"
+    environment: any
+    examples:
+      - "/hive-mind-update"
+
+  - name: gtm
+    description: 基于产品事实、PRD、决策和竞品资料，生成商业化内容、卖点框架和销售表达
+    trigger: "/gtm"
+    environment: any
+    subcommands:
+      - "--battle-angle"
+    examples:
+      - "/gtm 写一篇你的产品相比竞品的核心优势文章"
+      - "/gtm dashboard analytics insights 这几个能力怎么包装成官网文章"
+      - "/gtm --battle-angle 你的产品 vs 某个竞品"
+
+  - name: email
+    description: 基于产品知识库生成产品通知邮件、邮件营销和销售邮件内容，合成固定模板 HTML，并沉淀到资产库
+    trigger: "/email"
+    environment: any
+    subcommands:
+      - "--save"
+      - "--product-update"
+      - "--marketing"
+      - "--sales"
+    examples:
+      - "/email 写一封产品更新邮件，中文和英文，生成 HTML 并保存到资产库"
+      - "/email 给完成 CSV 导入的用户写 onboarding follow-up 邮件"
+      - "/email 面向付费用户写 plan renewal reminder"
+
+# 知识库配置
+knowledge_base:
+  type: github
+  url: https://github.com/your-org/team-knowledge.git
+  branch: main
+  required_dirs:
+    - facts/
+    - workflows/
+    - decisions/
+    - decisions/pending-questions/
+    - memory/research/
+    - reviews/
+    - approved-prds/
+    - ready-to-dev/
+    - dev-assets/
+  required_files:
+    - CLAUDE.md
+
+# 功能特性
+features:
+  - id: uninterrupted_discussion
+    name: 不间断讨论
+    description: 讨论期间不提取事实，保留写作流程
+
+  - id: draft_persistence
+    name: 草稿保存与恢复
+    description: 支持 30+ 分钟讨论，中断后可恢复
+
+  - id: fact_extraction
+    name: 事实自动提取
+    description: 使用 10 个规则从讨论中提取事实
+
+  - id: interaction_definition
+    name: 交互流程定义提取
+    description: 自动从讨论生成 YAML 格式的交互定义（GPT/Figma 友好）
+
+  - id: batch_review
+    name: 批量审核
+    description: 讨论结束后统一审核所有提取的内容
+
+  - id: auto_commit
+    name: 自动 Git 提交
+    description: 自动提交事实、决策、交互定义到知识库
+
+  - id: ui_prototype_generation
+    name: UI 原型生成
+    description: 从交互定义自动生成可点击的 HTML 原型
+
+  - id: figma_export
+    name: Figma 导出
+    description: 生成可导入 Figma 的设计结构 JSON
+
+  - id: team_collaboration
+    name: 多人协作
+    description: 支持多个 PM 同时讨论，智能冲突处理
+
+  - id: decision_logging
+    name: 决策日志
+    description: 记录设计决策、考虑的替代方案、将来的改进条件
+
+# 权限要求
+permissions:
+  - type: filesystem
+    scope: "~/team-knowledge"
+    access: read-write
+    required: true
+
+  - type: git
+    scope: "https://github.com/your-org/team-knowledge.git"
+    access: read-write
+    required: true
+    auth_methods:
+      - ssh
+      - github_token
+
+# 配置
+configuration:
+  knowledge_repo_url:
+    description: 知识库 GitHub 仓库 URL
+    type: string
+    required: true
+    default: "https://github.com/your-org/team-knowledge.git"
+
+  git_author_name:
+    description: Git 提交的作者名字
+    type: string
+    required: false
+    default: "HiveMind Skill"
+
+  git_author_email:
+    description: Git 提交的作者邮箱
+    type: string
+    required: false
+    default: "bot@example.com"
+
+  auto_pull_before_commit:
+    description: 提交前自动拉取最新版本
+    type: boolean
+    required: false
+    default: true
+
+  retry_on_conflict:
+    description: 合并冲突时是否自动重试
+    type: boolean
+    required: false
+    default: true
+
+  max_retries:
+    description: 最大重试次数
+    type: integer
+    required: false
+    default: 3
+
+# 支持的产品
+products:
+  - your-product
+
+# 版本历史
+history:
+  - version: 0.0.3
+    date: 2026-04-16
+    changes:
+      - 新命令 /prd-discuss 替代 /prd-write，强调知识沉淀
+      - 新命令 /ui-draft，从交互定义生成可点击的 HTML 原型
+      - 草稿保存与恢复机制，支持长讨论（30+ 分钟）
+      - 10 个提取规则（新增交互流程规则 8-10）
+      - 自动生成 YAML 格式的交互定义（GPT/Figma 友好）
+      - 自动生成 Figma JSON 和 HTML 原型代码结构
+      - 改进的决策日志（记录权衡分析）
+      - 完整的架构文档（ARCHITECTURE.md）
+
+  - version: 0.0.2
+    date: 2026-04-15
+    changes:
+      - 企业级多人协作支持
+      - 改进的冲突处理
+      - 增强的错误提示
+      - 完整的中文文档
+
+  - version: 0.0.1
+    date: 2026-04-14
+    changes:
+      - 初始版本
+      - 基础工作流
+      - 事实提取和决策日志
+
+# 许可证
+license: MIT
+license_url: https://github.com/eureka266/hive-mind/blob/main/LICENSE
+
+# 支持和反馈
+support:
+  documentation: https://github.com/eureka266/hive-mind
+  issues: https://github.com/eureka266/hive-mind/issues
+  contact: you@example.com
+  slack: "#hive-mind"
+
+# 企业部署配置
+enterprise:
+  multi_team: true
+  sso_support: false
+  audit_log: true
+  custom_branding: false
+
+  team_management:
+    max_teams: unlimited
+    permissions_model: role_based
+    roles:
+      - admin
+      - pm
+      - viewer
+
+---
+# 部署说明
+#
+# 企业管理员部署：
+# 1. 下载此包
+# 2. 运行: bash install-enterprise.sh
+# 3. 按照向导配置团队权限
+# 4. 分享安装链接给团队成员
+#
+# 团队成员安装：
+# 1. 运行: bash install.sh
+# 2. 输入个人 git 凭证
+# 3. 开始使用: /prd-write

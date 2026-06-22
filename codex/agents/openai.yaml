@@ -1,0 +1,6 @@
+interface:
+  display_name: "HiveMind"
+  short_description: "Maintain product knowledge, draft PRDs, GTM content, email assets, dev handoffs, and prototypes"
+  default_prompt: "使用 $hive-mind，用中文和我协作，通过 /prd 维护产品知识库，或把产品想法整理成有证据支撑的 PRD、GTM 叙事、邮件资产或原型计划。除非我明确要求英文，默认用简洁专业中文交流。"
+policy:
+  allow_implicit_invocation: true
