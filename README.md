@@ -124,7 +124,16 @@ Details: [`claude-code/README.md`](./claude-code/README.md), [`codex/README.md`]
 
 ## Acknowledgements
 
-The questioning logic in `/prd` — one question at a time, context loaded before asking, no sycophancy, no moving on until you've answered concretely — is inspired by [gstack](https://github.com/garrytan/gstack)'s `/office-hours`. The `/prd review` command draws from gstack's `/plan-ceo-review`: premise challenge, scope risk, and adversarial "would you regret this in 6 months?" framing applied to product decisions. Thank you [@garrytan](https://github.com/garrytan).
+**Proactive memory** is inspired by [Trellis](https://github.com/mindfold-ai/Trellis/tree/main)'s spec → task workspace → journal → finish loop: structured context flows *into* each session automatically, and new learnings are promoted *back* into persistent rules after the session ends. HiveMind applies this pattern to the PM workflow:
+
+- **Session start** — load `memory/rules/` (reusable product rules) and the relevant `features/[feature]/` workspace into context automatically
+- **During discussion** — track newly discovered facts, decisions, and reusable principles
+- **Memory Review Gate (before finishing)** — present candidate rules to the PM; nothing is written until approved
+- **Approved rules** — saved to `memory/rules/`, available as context in every future session on this product
+
+The result: each `/prd` session gets smarter about your product's constraints and decisions without the PM having to repeat them.
+
+**Questioning logic** in `/prd` — one question at a time, knowledge base loaded before asking, no sycophancy, no moving on until you've answered concretely — is inspired by [gstack](https://github.com/garrytan/gstack)'s `/office-hours`. The `/prd review` command draws from gstack's `/plan-ceo-review`: premise challenge, scope risk, and adversarial "would you regret this in 6 months?" framing applied to product decisions. Thank you [@garrytan](https://github.com/garrytan).
 
 ## Safety & scope
 

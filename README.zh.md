@@ -124,7 +124,16 @@ bash ~/hive-mind/codex/install.sh            # Codex
 
 ## 致谢
 
-`/prd` 的追问逻辑——每次只问一个问题、先加载知识库再追问、拒绝模糊回答、不轻易放过没答清楚的问题——参考了 [gstack](https://github.com/garrytan/gstack) 的 `/office-hours`。`/prd review` 的逻辑参考了 gstack 的 `/plan-ceo-review`：前提挑战、范围风险、以及"六个月后你会不会后悔"式的反向追问，用在产品决策评审上。感谢 [@garrytan](https://github.com/garrytan)。
+**主动记忆机制**参考了 [Trellis](https://github.com/mindfold-ai/Trellis/tree/main) 的 spec → task workspace → journal → finish 循环：结构化上下文在每次会话开始时自动注入，新发现的规律在会话结束后被提升回持久规则库。HiveMind 把这套模式映射到 PM 的产品管理工作流：
+
+- **会话开始** — 自动加载 `memory/rules/`（可复用的产品规则）和对应的 `features/[feature]/` workspace 作为上下文
+- **讨论过程中** — 追踪本次发现的新事实、设计决策和可复用原则
+- **Memory Review Gate（结束前）** — 向 PM 展示候选规则，PM 批准前什么都不写入
+- **批准后的规则** — 保存到 `memory/rules/`，之后对这个产品的每次会话都会自动加载
+
+效果：每次 `/prd` 都比上一次更了解你的产品约束和决策背景，PM 不需要反复重申同样的前提。
+
+**追问逻辑**——每次只问一个问题、先加载知识库再追问、拒绝模糊回答、不轻易放过没答清楚的问题——参考了 [gstack](https://github.com/garrytan/gstack) 的 `/office-hours`。`/prd review` 的逻辑参考了 gstack 的 `/plan-ceo-review`：前提挑战、范围风险、以及"六个月后你会不会后悔"式的反向追问，用在产品决策评审上。感谢 [@garrytan](https://github.com/garrytan)。
 
 ## 安全与边界
 
