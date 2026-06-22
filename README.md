@@ -1,6 +1,6 @@
 <div align="center">
 
-![HiveMind](./docs/assets/hivemind-title.png)
+<img src="./docs/assets/hivemind-title.png" alt="HiveMind" width="320" />
 
 <p style="font-size: 14px; color: #666;">
 Turn every product discussion into a structured, version-controlled, team-shared knowledge base.
