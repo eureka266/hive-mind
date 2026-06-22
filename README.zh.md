@@ -1,8 +1,6 @@
 <div align="center">
 
-![HiveMind](./docs/assets/hivemind-logo.png)
-
-# HiveMind
+![HiveMind](./docs/assets/hivemind-title.png)
 
 <p style="font-size: 14px; color: #666;">
 团队的第二大脑。每次产品讨论，都自动变成长久、可追溯、可复用的结构化知识。
