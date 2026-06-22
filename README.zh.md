@@ -33,7 +33,8 @@
 | **讨论自动提取** | `/prd` 聊需求，AI 自动拆解成 facts、decisions、workflows。不用手动写 spec。 |
 | **结构化知识库** | 所有产出存进 Git repo（facts/、decisions/、features/、memory/ 等），版本化、可追溯、全团队共享。 |
 | **主动记忆** | 讨论前自动加载相关规则和决策，讨论后主动提示"这条规则值得沉淀吗"。参考 [Trellis](https://github.com/mindfold-ai/trellis)。 |
-| **完整工作流** | 从讨论到 PRD、审查、原型、研发交接、GTM 内容、邮件——一条龙支持。 |
+| **完整工作流** | 从讨论到 PRD、审查、原型、研发交接、GTM 内容、邮件、产品视频——一条龙支持。 |
+| **内容生成** | `/gtm` 输出定位与销售话术，`/email` 生成营销邮件，`/video` 制作演示/教程/对比视频（基于 Remotion，自动注入品牌色）。全部沉淀到知识库。 |
 | **团队共享** | 知识库是你自己的私有 Git repo。团队 clone 一下，所有历史决策和规则都在，新人快速上手。 |
 
 ## 快速开始
@@ -78,6 +79,9 @@ npx skills add eureka266/hive-mind
 **市场 / 增长**
 ```
 /gtm 我们相比竞品的核心优势            # 生成定位文档、销售话术、产品一页纸
+/video dashboard 功能演示              # 产品演示视频：脚本 → 确认 → 代码生成 → 本地渲染
+/video --tutorial csv-import          # 教程视频：分步讲解功能使用流程
+/video --comparison 与竞品对比         # 对比动图：直观展示产品差异
 /email 五月产品更新                    # 起草产品更新邮件，输出可直接发送的 HTML
 /email 免费用户升级引导                # 触发式邮件：配额预警、升级引导文案
 ```
@@ -146,14 +150,23 @@ team-knowledge/
 ├── archive/                         # 已放弃或被替代——永不删除，只移动
 │
 ├── assets/
-│   └── emails/                      # /email → 每次邮件任务一个文件夹
-│       ├── 2026-05-25-product-update-may/
-│       │   ├── brief.md             #   邮件 brief 和确认记录
-│       │   ├── content.md           #   已审核的正文
-│       │   └── email.html           #   可直接发送的 HTML
-│       └── 2026-06-02-quota-exhausted-nudge/
-│           ├── content.md
-│           └── email.html
+│   ├── emails/                      # /email → 每次邮件任务一个文件夹
+│   │   ├── 2026-05-25-product-update-may/
+│   │   │   ├── brief.md             #   邮件 brief 和确认记录
+│   │   │   ├── content.md           #   已审核的正文
+│   │   │   └── email.html           #   可直接发送的 HTML
+│   │   └── 2026-06-02-quota-exhausted-nudge/
+│   │       ├── content.md
+│   │       └── email.html
+│   └── videos/                      # /video → 每条视频一个文件夹
+│       ├── 2026-06-15-dashboard-demo/
+│       │   ├── out.mp4              #   渲染完成的视频
+│       │   ├── script.md            #   确认后的脚本（Phase 1）
+│       │   └── VideoScene.tsx       #   Remotion 源码（Phase 3）
+│       └── 2026-06-20-csv-tutorial/
+│           ├── out.mp4
+│           ├── script.md
+│           └── VideoScene.tsx
 │
 ├── ai-kb/                           # /prd lumi → 嵌入式 AI 助手的 RAG 知识库
 │   ├── user_manual/
