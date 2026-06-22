@@ -24,7 +24,7 @@ A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nob
 
 | Capability | Effect |
 |------------|--------|
-| **Auto-extract discussions** | `/prd` chat about needs → AI auto-splits into facts, decisions, workflows. No manual spec writing. |
+| **Auto-extract discussions** | `/prd` chat about needs → AI auto-splits into facts, decisions, workflows. No manual spec writing. Inspired by [gstack](https://github.com/garrytan/gstack). |
 | **Structured knowledge base** | All outputs land in Git repo (`facts/`, `decisions/`, `features/`, `memory/`, etc.) — versioned, traceable, team-shared. |
 | **Proactive memory** | Auto-load related rules and decisions before discussion. Auto-suggest which rules to save after. Inspired by [Trellis](https://github.com/mindfold-ai/trellis). |
 | **Complete workflow** | From discussion to PRD, review, prototype, dev handoff, GTM content, email — end-to-end. |
