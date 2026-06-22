@@ -16,7 +16,7 @@
 <strong>讨论是即时的，知识却在不断流失。</strong>HiveMind 把每一次产品讨论沉淀成一个结构化、版本化、团队共享的 Git 知识库——并直接基于它产出 PRD、可点击原型和研发交接物。
 </p>
 
-[English](./README.md) • [GitHub](https://github.com/eureka266/hive-mind) • [使用案例](./docs/use-cases.md)
+[English](./README.md) • [GitHub](https://github.com/eureka266/hive-mind) • [使用案例](./docs/use-cases.zh.md)
 
 [![install](https://img.shields.io/badge/install-npx%20skills%20add-000000?style=flat-square)](https://github.com/eureka266/hive-mind)
 [![GitHub Stars](https://img.shields.io/github/stars/eureka266/hive-mind?style=flat-square&color=eab308)](https://github.com/eureka266/hive-mind/stargazers)
