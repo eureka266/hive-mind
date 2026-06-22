@@ -2,17 +2,11 @@
 
 <img src="./docs/assets/hivemind-title.png" alt="HiveMind" width="320" />
 
-<p style="font-size: 14px; color: #666;">
-Turn every product discussion into a structured, version-controlled, team-shared knowledge base.
-</p>
+**Turn every product discussion into a structured, version-controlled, team-shared knowledge base.**
 
-<p style="font-size: 14px; color: #666;">
-A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nobody remembers <i>why</i> you cut that approach. New hires can't piece together the "why" from scattered chats and agreements.
-</p>
+A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nobody remembers *why* you cut that approach. New hires can't piece together the "why" from scattered chats and agreements.
 
-<p style="font-size: 14px; color: #666;">
-<strong>Discussions are real-time; knowledge leaks away.</strong> HiveMind captures it: every product chat becomes traceable, durable, reusable facts, decisions, and workflows — versioned in Git, shared with your team.
-</p>
+**Discussions are real-time; knowledge leaks away.** HiveMind captures it: every product chat becomes traceable, durable, reusable facts, decisions, and workflows — versioned in Git, shared with your team.
 
 [中文](./README.zh.md) • [GitHub](https://github.com/eureka266/hive-mind) • [Use Cases](./docs/use-cases.md)
 
