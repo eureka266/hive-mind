@@ -241,6 +241,7 @@ Details: [`claude-code/README.md`](./claude-code/README.md), [`codex/README.md`]
 | Push failed (permission denied) | Ensure you can write to the knowledge repo (your own repo or team org grants access); or skip `KNOWLEDGE_REPO` for local-only mode |
 | Lost mid-discussion changes | Re-run `/prd [feature]` — HiveMind auto-detects and offers recovery |
 | How do I view the HTML prototype? | Claude Code: `open <knowledge-repo>/features/[feature]/prototype.html`; VS Code: use Live Preview extension |
+| `/ui-draft` returns `python: command not found` | Some systems lack `python` command (e.g., macOS has only `python3`). Create symlink: `sudo ln -sf $(which python3) /usr/local/bin/python`. Verify with `python --version` |
 
 ## Acknowledgements
 

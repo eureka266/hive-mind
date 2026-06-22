@@ -568,6 +568,16 @@ bash <SKILL_DIR>/claude-code/scripts/register-skills.sh
 
 **草稿丢失**：重新运行 `/prd [feature]`，系统会自动检测并提示恢复。
 
+**`/ui-draft` 报错：`python: command not found`**
+
+某些系统上 `python` 命令不存在（macOS 通常只有 `python3`）。创建 symlink 解决：
+
+```bash
+sudo ln -sf $(which python3) /usr/local/bin/python
+```
+
+验证：`python --version` 应返回 Python 3.x。
+
 ---
 
 ## 更多
