@@ -25,10 +25,11 @@ A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nob
 | Capability | Effect |
 |------------|--------|
 | **Auto-extract discussions** | `/prd` chat about needs → AI auto-splits into facts, decisions, workflows. No manual spec writing. Inspired by [gstack](https://github.com/garrytan/gstack). |
-| **Structured knowledge base** | All outputs land in Git repo (`facts/`, `decisions/`, `features/`, `memory/`, etc.) — versioned, traceable, team-shared. |
+| **Structured knowledge base** | All outputs land in Git repo (`facts/`, `decisions/`, `features/`, `memory/`, `assets/`, etc.) — versioned, traceable, team-shared. |
 | **Proactive memory** | Auto-load related rules and decisions before discussion. Auto-suggest which rules to save after. Inspired by [Trellis](https://github.com/mindfold-ai/trellis). |
-| **Complete workflow** | From discussion to PRD, review, prototype, dev handoff, GTM content, email — end-to-end. |
-| **Team sharing** | Knowledge base is your own private Git repo. Team clones it, and every decision, rule, and history is there. New hires onboard 3x faster. |
+| **Complete workflow** | From discussion → PRD, review, prototype, dev handoff, GTM content, email, and product videos (demo/tutorial/marketing) — end-to-end. |
+| **Content generation** | `/gtm` for positioning, `/email` for campaigns, `/video` for demo/tutorial videos with brand-aware animation using Remotion. All persist to knowledge base. |
+| **Team sharing** | Knowledge base is your own private Git repo. Team clones it, and every decision, rule, video, and history is there. New hires onboard 3x faster. |
 
 ## Quick Start
 
@@ -72,6 +73,8 @@ Works with both **Claude Code** and **Codex** right away. Talk naturally and Hiv
 **Marketing / GTM**
 ```
 /gtm how we compare to competitors    # generate positioning doc, sales talk tracks, one-pagers
+/video dashboard analytics demo       # generate product demo video: script → confirm → code → render
+/video --tutorial csv-import          # create tutorial video explaining step-by-step feature usage
 /email product-update May             # draft product update email as ready-to-send HTML
 /email free-user-upgrade-nudge        # trigger-based email: quota warning, upsell copy
 ```
@@ -140,14 +143,23 @@ team-knowledge/
 ├── archive/                        # Abandoned or superseded — never deleted, just moved
 │
 ├── assets/
-│   └── emails/                     # /email → one folder per campaign
-│       ├── 2026-05-25-product-update-may/
-│       │   ├── brief.md            #   Campaign brief and approval notes
-│       │   ├── content.md          #   Approved copy
-│       │   └── email.html          #   Ready-to-send HTML
-│       └── 2026-06-02-quota-exhausted-nudge/
-│           ├── content.md
-│           └── email.html
+│   ├── emails/                     # /email → one folder per campaign
+│   │   ├── 2026-05-25-product-update-may/
+│   │   │   ├── brief.md            #   Campaign brief and approval notes
+│   │   │   ├── content.md          #   Approved copy
+│   │   │   └── email.html          #   Ready-to-send HTML
+│   │   └── 2026-06-02-quota-exhausted-nudge/
+│   │       ├── content.md
+│   │       └── email.html
+│   └── videos/                     # /video → one folder per video
+│       ├── 2026-06-15-dashboard-demo/
+│       │   ├── out.mp4             #   Rendered video
+│       │   ├── script.md           #   Confirmed script (Phase 1)
+│       │   └── VideoScene.tsx      #   Remotion source code (Phase 3)
+│       └── 2026-06-20-csv-tutorial/
+│           ├── out.mp4
+│           ├── script.md
+│           └── VideoScene.tsx
 │
 ├── ai-kb/                          # /prd lumi → RAG knowledge base for embedded AI assistant
 │   ├── user_manual/
