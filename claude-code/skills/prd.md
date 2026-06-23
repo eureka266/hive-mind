@@ -36,7 +36,7 @@ HiveMind 的产品讨论命令。支持多种工作模式和自动更新：
 然后：
 1. 选择 "Add Hook"
 2. 选择 "Before Command Execution"  
-3. 输入命令: `bash ~/hive-mind/claude-code/scripts/check-updates.sh`
+3. 输入命令: `bash ~/HiveMind/claude-code/scripts/check-updates.sh`
 
 这样每次执行 `/prd`、`/dev` 等命令前，都会自动检查并更新。
 

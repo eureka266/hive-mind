@@ -54,7 +54,7 @@ git push -u origin main
 更新 Repo A 以指向 Repo B：
 
 ```bash
-cd ~/hive-mind
+cd ~/HiveMind
 echo "https://github.com/your-org/team-knowledge.git" > references/knowledge-repo-url
 git add references/knowledge-repo-url
 git commit -m "chore: set knowledge repo URL"
@@ -68,7 +68,7 @@ git push
 如果部署 Skill 为单独的仓库：
 
 ```bash
-cd ~/hive-mind
+cd ~/HiveMind
 git init
 git add .
 git commit -m "chore: initialize HiveMind skill v2"
@@ -84,14 +84,14 @@ git push -u origin main
 ### 选项 A: 本地 Skill（推荐用于测试）
 
 1. 打开 Claude Code
-2. 进入 `/Users/eureka266/hive-mind/`
+2. 进入 `/Users/eureka266/HiveMind/`
 3. 输入 `/prd-write`
 4. Skill 使用本地 SKILL.md 运行
 
 ### 选项 B: 注册为 Claude Code Skill
 
 1. 创建 `.claude/skills/hive-mind/SKILL.md`
-2. 从 `~/hive-mind/SKILL.md` 复制内容
+2. 从 `~/HiveMind/SKILL.md` 复制内容
 3. 用 `/hive-mind-write` 命令测试
 
 ## 步骤 5: 端到端测试
@@ -114,7 +114,7 @@ git push -u origin main
 **解决方案**: 
 ```bash
 # 验证 URL 是否正确
-cat ~/hive-mind/references/knowledge-repo-url
+cat ~/HiveMind/references/knowledge-repo-url
 
 # 验证 GitHub 仓库是否存在
 gh repo view your-org/team-knowledge
@@ -169,7 +169,7 @@ git config --global user.email "your@email.com"
 
 ```bash
 # 检查知识库是否可访问
-cd /tmp && git clone $(cat ~/hive-mind/references/knowledge-repo-url) test-clone
+cd /tmp && git clone $(cat ~/HiveMind/references/knowledge-repo-url) test-clone
 
 # 检查 Skill 是否可读取事实
 cat ~/team-knowledge/facts/your-product.md | wc -l

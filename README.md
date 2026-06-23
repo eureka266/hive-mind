@@ -214,7 +214,7 @@ Knowledge base structure:
 By default, local-only at `~/team-knowledge` (zero setup, works offline). When you're ready to share, point it to your own private Git repo:
 
 ```bash
-KNOWLEDGE_REPO=your-org/team-knowledge bash ~/hive-mind/claude-code/install.sh
+KNOWLEDGE_REPO=your-org/team-knowledge bash ~/HiveMind/claude-code/install.sh
 ```
 
 Your data stays yours — HiveMind never uploads, stores, or holds anything.
@@ -224,10 +224,10 @@ Your data stays yours — HiveMind never uploads, stores, or holds anything.
 Want native slash commands, auto-update via hook, and multi-person collaboration? Clone and run:
 
 ```bash
-git clone https://github.com/eureka266/HiveMind.git ~/hive-mind
-bash ~/hive-mind/claude-code/install.sh      # Claude Code (terminal & VS Code)
+git clone https://github.com/eureka266/HiveMind.git ~/HiveMind
+bash ~/HiveMind/claude-code/install.sh      # Claude Code (terminal & VS Code)
 # or
-bash ~/hive-mind/codex/install.sh            # Codex
+bash ~/HiveMind/codex/install.sh            # Codex
 ```
 
 Details: [`claude-code/README.md`](./claude-code/README.md), [`codex/README.md`](./codex/README.md), [`claude-code/ENTERPRISE_SETUP.md`](./claude-code/ENTERPRISE_SETUP.md).

@@ -170,7 +170,7 @@ Memory loaded:
 3. 使用 Claude Code 版自带渲染脚本合成 HTML：
 
    ```bash
-   python3 ~/hive-mind/claude-code/email/render_email.py \
+   python3 ~/HiveMind/claude-code/email/render_email.py \
      --input ~/team-knowledge/assets/emails/{slug}/render-input.en.json \
      --output ~/team-knowledge/assets/emails/{slug}/email.en.html
    ```

@@ -116,7 +116,7 @@ When the user approves or explicitly asks to save directly:
 3. Use `email/render_email.py` to render HTML:
 
 ```bash
-python3 ~/hive-mind/codex/email/render_email.py \
+python3 ~/HiveMind/codex/email/render_email.py \
   --input ~/team-knowledge/assets/emails/{slug}/render-input.en.json \
   --output ~/team-knowledge/assets/emails/{slug}/email.en.html
 ```

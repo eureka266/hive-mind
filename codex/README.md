@@ -7,7 +7,7 @@
 打开 Codex，把下面这句话发给它：
 
 ```text
-帮我安装这个 Codex skill：https://github.com/eureka266/HiveMind 。请把完整仓库 clone 到 ~/hive-mind，运行 ~/hive-mind/codex/install.sh 安装到 ~/.codex/skills/hive-mind。安装完成后提醒我重启 Codex 或开启新会话。
+帮我安装这个 Codex skill：https://github.com/eureka266/HiveMind 。请把完整仓库 clone 到 ~/HiveMind，运行 ~/HiveMind/codex/install.sh 安装到 ~/.codex/skills/hive-mind。安装完成后提醒我重启 Codex 或开启新会话。
 ```
 
 安装后 skill 会复制到：
@@ -39,7 +39,7 @@ Codex 不注册真实 slash command。你可以自然语言触发，也可以输
 HiveMind 把所有产出沉淀到一个团队产品知识库（默认本地 `~/team-knowledge`）。你可以让它只在本地维护，也可以把知识库指向你自己的私有 Git 仓库以便团队协作：
 
 ```bash
-KNOWLEDGE_REPO=your-org/team-knowledge bash ~/hive-mind/codex/install.sh
+KNOWLEDGE_REPO=your-org/team-knowledge bash ~/HiveMind/codex/install.sh
 ```
 
 不设置 `KNOWLEDGE_REPO` 时，安装脚本会在本地 `git init` 一个全新的知识库，不连接任何远端。

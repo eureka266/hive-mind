@@ -86,7 +86,7 @@ echo "HiveMind Skill - Team Member Setup"
 echo ""
 
 # 自动调用主安装脚本
-bash ~/hive-mind/install.sh
+bash ~/HiveMind/install.sh
 EOF
 
 chmod +x ~/.hive-mind-enterprise/scripts/team-install.sh
@@ -163,7 +163,7 @@ ssh-keygen -t ed25519
 
 ### 3. 开始使用
 \`\`\`bash
-cd ~/hive-mind
+cd ~/HiveMind
 # 在 Claude Code 中打开此目录
 # 然后运行: /prd-write
 \`\`\`
@@ -210,7 +210,7 @@ echo ""
 echo -e "${COLOR_BLUE}管理:${COLOR_RESET}"
 echo "  - 查看审计日志: cat ~/.hive-mind-enterprise/logs/audit.log"
 echo "  - 更新配置: vim ~/.hive-mind-enterprise/config.yaml"
-echo "  - 查看版本: cat ~/hive-mind/VERSION"
+echo "  - 查看版本: cat ~/HiveMind/VERSION"
 echo ""
 
 echo -e "${COLOR_BLUE}下一步:${COLOR_RESET}"

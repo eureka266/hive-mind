@@ -38,7 +38,7 @@
 企业管理员运行：
 
 ```bash
-bash ~/hive-mind/install-enterprise.sh
+bash ~/HiveMind/install-enterprise.sh
 ```
 
 这个向导会：
@@ -102,14 +102,14 @@ ssh-keygen -t ed25519
 # 将公钥添加到: https://github.com/settings/keys
 
 # 4. 开始使用
-cd ~/hive-mind
+cd ~/HiveMind
 # 在 Claude Code 中打开此目录，然后运行: /prd [feature-name]
 ```
 
 ### 验证安装
 
 ```bash
-cd ~/hive-mind
+cd ~/HiveMind
 ./scripts/test-setup.sh
 ```
 
@@ -226,7 +226,7 @@ sudo apt-get install git
 ### 检查更新
 
 ```bash
-cd ~/hive-mind
+cd ~/HiveMind
 ./update.sh
 ```
 
@@ -245,7 +245,7 @@ cd ~/hive-mind
 
 ```bash
 # 更新 Skill
-cd ~/hive-mind
+cd ~/HiveMind
 git pull origin main
 
 # 更新知识库
@@ -257,10 +257,10 @@ git pull origin main
 
 ```bash
 # 查看 Skill 版本
-cat ~/hive-mind/VERSION
+cat ~/HiveMind/VERSION
 
 # 查看提交历史
-cd ~/hive-mind
+cd ~/HiveMind
 git log --oneline | head -10
 ```
 
@@ -376,7 +376,7 @@ security:
 A: 不能。Skill 需要访问 GitHub 知识库来读写 PRD。
 
 **Q: 能否自定义 Skill?**  
-A: 可以。编辑 `~/hive-mind/claude-code/skills/` 下对应的命令文件，修改后重新运行 `register-skills.sh` 即生效。
+A: 可以。编辑 `~/HiveMind/claude-code/skills/` 下对应的命令文件，修改后重新运行 `register-skills.sh` 即生效。
 
 **Q: 能否与其他工具集成?**
 A: 目前支持 GitHub。未来可添加 Slack、Jira 等集成。

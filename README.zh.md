@@ -221,7 +221,7 @@ team-knowledge/
 默认在本地 `~/team-knowledge` 维护，不连任何远端，开箱即用。想团队协作时，把它指向你自己的私有 Git 仓库即可：
 
 ```bash
-KNOWLEDGE_REPO=your-org/team-knowledge bash ~/hive-mind/claude-code/install.sh
+KNOWLEDGE_REPO=your-org/team-knowledge bash ~/HiveMind/claude-code/install.sh
 ```
 
 知识库完全是你自己的——HiveMind 不持有、不上传你的任何数据。
@@ -231,10 +231,10 @@ KNOWLEDGE_REPO=your-org/team-knowledge bash ~/hive-mind/claude-code/install.sh
 想要原生斜杠命令、PreToolUse 自动更新 hook、多人协作权限模型？clone 仓库跑安装脚本：
 
 ```bash
-git clone https://github.com/eureka266/HiveMind.git ~/hive-mind
-bash ~/hive-mind/claude-code/install.sh      # Claude Code（终端 & VS Code 通用）
+git clone https://github.com/eureka266/HiveMind.git ~/HiveMind
+bash ~/HiveMind/claude-code/install.sh      # Claude Code（终端 & VS Code 通用）
 # 或
-bash ~/hive-mind/codex/install.sh            # Codex
+bash ~/HiveMind/codex/install.sh            # Codex
 ```
 
 详见 [`claude-code/README.md`](./claude-code/README.md)、[`codex/README.md`](./codex/README.md) 和 [`claude-code/ENTERPRISE_SETUP.md`](./claude-code/ENTERPRISE_SETUP.md)。

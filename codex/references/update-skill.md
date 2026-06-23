@@ -22,6 +22,6 @@ The script reads the recorded source repository from `~/.hive-mind-skill/codex-s
 ## Boundaries
 
 - Codex does not have Claude Code's PreToolUse hook. This is an explicit update workflow, not a guaranteed silent self-update before every PM workflow.
-- The source repo must be a git clone at the path recorded in `~/.hive-mind-skill/codex-source-repo`, or `~/hive-mind` as a fallback.
+- The source repo must be a git clone at the path recorded in `~/.hive-mind-skill/codex-source-repo`, or `~/HiveMind` as a fallback.
 - By default, the script follows the source repo's current upstream remote/branch. Override with `HIVE_MIND_SKILL_REMOTE` and `HIVE_MIND_SKILL_BRANCH` only when intentionally updating from a different remote.
 - Never remove local changes automatically.
