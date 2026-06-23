@@ -379,4 +379,4 @@ AI："这改变了假设方向。看你粘贴的支持工单，
 
 ---
 
-*有其他使用场景想分享？欢迎提交 [Issue](https://github.com/eureka266/hive-mind/issues) 或 PR。*
+*有其他使用场景想分享？欢迎提交 [Issue](https://github.com/eureka266/HiveMind/issues) 或 PR。*

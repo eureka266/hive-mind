@@ -72,7 +72,7 @@ cd ~/hive-mind
 git init
 git add .
 git commit -m "chore: initialize HiveMind skill v2"
-git remote add origin https://github.com/eureka266/hive-mind.git
+git remote add origin https://github.com/eureka266/HiveMind.git
 git branch -M main
 git push -u origin main
 ```

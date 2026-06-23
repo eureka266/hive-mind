@@ -295,12 +295,12 @@ history:
 
 # 许可证
 license: MIT
-license_url: https://github.com/eureka266/hive-mind/blob/main/LICENSE
+license_url: https://github.com/eureka266/HiveMind/blob/main/LICENSE
 
 # 支持和反馈
 support:
-  documentation: https://github.com/eureka266/hive-mind
-  issues: https://github.com/eureka266/hive-mind/issues
+  documentation: https://github.com/eureka266/HiveMind
+  issues: https://github.com/eureka266/HiveMind/issues
   contact: you@example.com
   slack: "#hive-mind"
 

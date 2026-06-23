@@ -8,12 +8,12 @@ A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nob
 
 **Discussions are real-time; knowledge leaks away.** HiveMind captures it: every product chat becomes traceable, durable, reusable facts, decisions, and workflows — versioned in Git, shared with your team.
 
-[中文](./README.zh.md) • [GitHub](https://github.com/eureka266/hive-mind) • [Use Cases](./docs/use-cases.md)
+[中文](./README.zh.md) • [GitHub](https://github.com/eureka266/HiveMind) • [Use Cases](./docs/use-cases.md)
 
-[![install](https://img.shields.io/badge/install-npx%20skills%20add-000000?style=flat-square)](https://github.com/eureka266/hive-mind)
-[![GitHub Stars](https://img.shields.io/github/stars/eureka266/hive-mind?style=flat-square&color=eab308)](https://github.com/eureka266/hive-mind/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/eureka266/hive-mind?style=flat-square&color=3b82f6)](https://github.com/eureka266/hive-mind/network/members)
-[![Last Commit](https://img.shields.io/github/last-commit/eureka266/hive-mind?style=flat-square&color=6b7280)](https://github.com/eureka266/hive-mind/commits)
+[![install](https://img.shields.io/badge/install-npx%20skills%20add-000000?style=flat-square)](https://github.com/eureka266/HiveMind)
+[![GitHub Stars](https://img.shields.io/github/stars/eureka266/HiveMind?style=flat-square&color=eab308)](https://github.com/eureka266/HiveMind/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/eureka266/HiveMind?style=flat-square&color=3b82f6)](https://github.com/eureka266/HiveMind/network/members)
+[![Last Commit](https://img.shields.io/github/last-commit/eureka266/HiveMind?style=flat-square&color=6b7280)](https://github.com/eureka266/HiveMind/commits)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE)
 
 </div>
@@ -40,7 +40,7 @@ A two-hour meeting ends, conclusions live in a few heads. Three weeks later, nob
 
 **Install**
 ```bash
-npx skills add eureka266/hive-mind
+npx skills add eureka266/HiveMind
 ```
 
 Works with both **Claude Code** and **Codex** right away. Talk naturally and HiveMind listens.
@@ -224,7 +224,7 @@ Your data stays yours — HiveMind never uploads, stores, or holds anything.
 Want native slash commands, auto-update via hook, and multi-person collaboration? Clone and run:
 
 ```bash
-git clone https://github.com/eureka266/hive-mind.git ~/hive-mind
+git clone https://github.com/eureka266/HiveMind.git ~/hive-mind
 bash ~/hive-mind/claude-code/install.sh      # Claude Code (terminal & VS Code)
 # or
 bash ~/hive-mind/codex/install.sh            # Codex
@@ -236,7 +236,7 @@ Details: [`claude-code/README.md`](./claude-code/README.md), [`codex/README.md`]
 
 | Problem | Fix |
 |---------|-----|
-| `npx skills add` not found | Check Node/npx installed (`npx -v`), network can reach GitHub, command is `npx skills add eureka266/hive-mind` |
+| `npx skills add` not found | Check Node/npx installed (`npx -v`), network can reach GitHub, command is `npx skills add eureka266/HiveMind` |
 | No `/prd` command / commands don't work | `npx skills add` installs a generic skill that listens for natural language. For native `/prd` use [Team Setup](#team-setup-optional) and restart your session |
 | Push failed (permission denied) | Ensure you can write to the knowledge repo (your own repo or team org grants access); or skip `KNOWLEDGE_REPO` for local-only mode |
 | Lost mid-discussion changes | Re-run `/prd [feature]` — HiveMind auto-detects and offers recovery |

@@ -7,7 +7,7 @@
 打开 Codex，把下面这句话发给它：
 
 ```text
-帮我安装这个 Codex skill：https://github.com/eureka266/hive-mind 。请把完整仓库 clone 到 ~/hive-mind，运行 ~/hive-mind/codex/install.sh 安装到 ~/.codex/skills/hive-mind。安装完成后提醒我重启 Codex 或开启新会话。
+帮我安装这个 Codex skill：https://github.com/eureka266/HiveMind 。请把完整仓库 clone 到 ~/hive-mind，运行 ~/hive-mind/codex/install.sh 安装到 ~/.codex/skills/hive-mind。安装完成后提醒我重启 Codex 或开启新会话。
 ```
 
 安装后 skill 会复制到：

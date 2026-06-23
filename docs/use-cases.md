@@ -379,4 +379,4 @@ AI: "That changes the hypothesis. Looking at the support tickets you pasted,
 
 ---
 
-*Have a scenario that doesn't fit these patterns? Open an [issue](https://github.com/eureka266/hive-mind/issues) or PR.*
+*Have a scenario that doesn't fit these patterns? Open an [issue](https://github.com/eureka266/HiveMind/issues) or PR.*

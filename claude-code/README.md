@@ -15,7 +15,7 @@
 
 ```bash
 # 默认安装到 ~/.hive-mind/
-git clone https://github.com/eureka266/hive-mind.git ~/.hive-mind/skill
+git clone https://github.com/eureka266/HiveMind.git ~/.hive-mind/skill
 bash ~/.hive-mind/skill/claude-code/install.sh
 ```
 

@@ -194,7 +194,7 @@ fi
    cat > README.md << 'EOF'
    # Team Knowledge Base
 
-   This repository is managed by [HiveMind](https://github.com/eureka266/hive-mind).
+   This repository is managed by [HiveMind](https://github.com/eureka266/HiveMind).
 
    Every product discussion, PRD, and decision made with HiveMind is stored here.
    Team members clone this repo to share one brain.

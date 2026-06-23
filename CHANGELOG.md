@@ -117,5 +117,5 @@ First public release.
   before finishing to capture reusable rules.
 - **Two variants** — native Claude Code slash commands (with auto-update hook and team
   setup) and a generic Codex / SKILL-format skill.
-- Install via `npx skills add eureka266/hive-mind`, or clone + `install.sh` for the
+- Install via `npx skills add eureka266/HiveMind`, or clone + `install.sh` for the
   team setup.

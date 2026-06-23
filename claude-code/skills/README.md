@@ -220,4 +220,4 @@ npx remotion render src/VideoScene.tsx out.mp4
 
 ## 反馈与改进
 
-如有建议或发现问题，请提交 Issue：https://github.com/eureka266/hive-mind/issues
+如有建议或发现问题，请提交 Issue：https://github.com/eureka266/HiveMind/issues

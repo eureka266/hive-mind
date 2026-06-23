@@ -33,7 +33,7 @@ if [ ! -d "$SKILL_REPO" ]; then
     echo -e "${COLOR_RED}✗ Skill source repo not found${COLOR_RESET}"
     echo "  Expected: $SKILL_REPO"
     echo "  Clone it first, for example:"
-    echo "  git clone https://github.com/eureka266/hive-mind.git ~/hive-mind"
+    echo "  git clone https://github.com/eureka266/HiveMind.git ~/hive-mind"
     exit 1
 fi
 

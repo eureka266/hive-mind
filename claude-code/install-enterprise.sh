@@ -181,7 +181,7 @@ cd ~/hive-mind
 - **SKILL.md**: 工作流详细规范
 
 ## 支持
-- GitHub Issues: https://github.com/eureka266/hive-mind/issues
+- GitHub Issues: https://github.com/eureka266/HiveMind/issues
 - 管理员邮箱: $ADMIN_EMAIL
 - Slack: #hive-mind
 

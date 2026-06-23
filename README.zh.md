@@ -14,12 +14,12 @@
 <strong>讨论是即时的，知识却在不断流失。</strong>HiveMind 把每一次产品讨论沉淀成一个结构化、版本化、团队共享的 Git 知识库——并直接基于它产出 PRD、可点击原型和研发交接物。
 </p>
 
-[English](./README.md) • [GitHub](https://github.com/eureka266/hive-mind) • [使用案例](./docs/use-cases.zh.md)
+[English](./README.md) • [GitHub](https://github.com/eureka266/HiveMind) • [使用案例](./docs/use-cases.zh.md)
 
-[![install](https://img.shields.io/badge/install-npx%20skills%20add-000000?style=flat-square)](https://github.com/eureka266/hive-mind)
-[![GitHub Stars](https://img.shields.io/github/stars/eureka266/hive-mind?style=flat-square&color=eab308)](https://github.com/eureka266/hive-mind/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/eureka266/hive-mind?style=flat-square&color=3b82f6)](https://github.com/eureka266/hive-mind/network/members)
-[![Last Commit](https://img.shields.io/github/last-commit/eureka266/hive-mind?style=flat-square&color=6b7280)](https://github.com/eureka266/hive-mind/commits)
+[![install](https://img.shields.io/badge/install-npx%20skills%20add-000000?style=flat-square)](https://github.com/eureka266/HiveMind)
+[![GitHub Stars](https://img.shields.io/github/stars/eureka266/HiveMind?style=flat-square&color=eab308)](https://github.com/eureka266/HiveMind/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/eureka266/HiveMind?style=flat-square&color=3b82f6)](https://github.com/eureka266/HiveMind/network/members)
+[![Last Commit](https://img.shields.io/github/last-commit/eureka266/HiveMind?style=flat-square&color=6b7280)](https://github.com/eureka266/HiveMind/commits)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE)
 
 </div>
@@ -46,7 +46,7 @@
 
 **安装**
 ```bash
-npx skills add eureka266/hive-mind
+npx skills add eureka266/HiveMind
 ```
 
 装好后直接对你的 AI 说话即可。HiveMind 同时支持 **Claude Code** 和 **Codex**。
@@ -231,7 +231,7 @@ KNOWLEDGE_REPO=your-org/team-knowledge bash ~/hive-mind/claude-code/install.sh
 想要原生斜杠命令、PreToolUse 自动更新 hook、多人协作权限模型？clone 仓库跑安装脚本：
 
 ```bash
-git clone https://github.com/eureka266/hive-mind.git ~/hive-mind
+git clone https://github.com/eureka266/HiveMind.git ~/hive-mind
 bash ~/hive-mind/claude-code/install.sh      # Claude Code（终端 & VS Code 通用）
 # 或
 bash ~/hive-mind/codex/install.sh            # Codex
@@ -243,7 +243,7 @@ bash ~/hive-mind/codex/install.sh            # Codex
 
 | 问题 | 解决 |
 |------|------|
-| `npx skills add` 找不到 skill | 确认 Node/npx 已安装（`npx -v`），网络可访问 GitHub，命令为 `npx skills add eureka266/hive-mind` |
+| `npx skills add` 找不到 skill | 确认 Node/npx 已安装（`npx -v`），网络可访问 GitHub，命令为 `npx skills add eureka266/HiveMind` |
 | 命令不生效 / 没有 `/prd` | `npx skills` 装的是通用 skill，靠自然语言触发；要原生斜杠命令请用[团队版安装](#团队版安装可选)并重开会话 |
 | 推送知识库失败（权限错误） | 确认你对知识库远端仓库有写权限（个人仓库或团队组织授权）；或先不设 `KNOWLEDGE_REPO`，纯本地使用 |
 | 草稿/讨论中断丢失 | 重新运行 `/prd [feature]`，HiveMind 会自动检测并提示恢复 |

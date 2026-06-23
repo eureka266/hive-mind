@@ -35,7 +35,7 @@ COLOR_RED='\033[0;31m'
 INSTALL_DIR="${INSTALL_DIR:-$HOME/.hive-mind}"
 SKILL_DIR="${SKILL_DIR:-$INSTALL_DIR/skill}"
 KNOWLEDGE_DIR="${KNOWLEDGE_DIR:-$INSTALL_DIR/knowledge}"
-SKILL_REPO="eureka266/hive-mind"
+SKILL_REPO="eureka266/HiveMind"
 # 知识库仓库默认为空：未显式提供 KNOWLEDGE_REPO 时，本地新建一个空知识库
 KNOWLEDGE_REPO="${KNOWLEDGE_REPO:-}"
 

@@ -365,8 +365,8 @@ security:
 
 ### 资源
 
-- **GitHub Issues**: https://github.com/eureka266/hive-mind/issues
-- **文档**: https://github.com/eureka266/hive-mind/
+- **GitHub Issues**: https://github.com/eureka266/HiveMind/issues
+- **文档**: https://github.com/eureka266/HiveMind/
 - **管理员邮箱**: you@example.com
 - **Slack 频道**: #hive-mind
 
